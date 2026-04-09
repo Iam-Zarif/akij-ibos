@@ -1,26 +1,84 @@
 @import "tailwindcss";
+@import "react-datepicker/dist/react-datepicker.css";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f7f8fb;
+  --foreground: #3f4a5a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), sans-serif;
+  margin: 0;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+a {
+  text-decoration: none;
+}
+
+.akij-time-picker-popper {
+  z-index: 40;
+}
+
+.akij-time-picker {
+  border: 0.0625rem solid #e5e8ef !important;
+  border-radius: 0.875rem !important;
+  font-family: var(--font-inter), sans-serif !important;
+  box-shadow: 0 1.125rem 3rem rgba(15, 23, 42, 0.12) !important;
+}
+
+.akij-time-picker .react-datepicker__header {
+  background: white !important;
+  border-bottom: 0.0625rem solid #edf1f6 !important;
+}
+
+.akij-time-picker .react-datepicker__current-month,
+.akij-time-picker .react-datepicker-time__header {
+  color: #425069 !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+}
+
+.akij-time-picker .react-datepicker__time-container {
+  border-left: 0.0625rem solid #edf1f6 !important;
+}
+
+.akij-time-picker .react-datepicker__time-box {
+  width: 8.75rem !important;
+}
+
+.akij-time-picker .react-datepicker__time-list-item {
+  height: auto !important;
+  padding: 0.625rem 0.875rem !important;
+  color: #425069 !important;
+  font-size: 0.875rem !important;
+}
+
+.akij-time-picker .react-datepicker__time-list-item--selected {
+  background: linear-gradient(90deg, #5f2eea 0%, #7b3ff6 100%) !important;
+  font-weight: 600 !important;
+}
+
+.akij-time-picker .react-datepicker__time-list-item:hover {
+  background: #f7f2ff !important;
 }

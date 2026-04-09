@@ -1,7 +1,15 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
 import type { NextConfig } from "next";
 
+const currentFilePath = fileURLToPath(import.meta.url);
+const currentDirectoryPath = path.dirname(currentFilePath);
+
 const nextConfig: NextConfig = {
-  /* config options here */
+  turbopack: {
+    root: currentDirectoryPath,
+  },
 };
 
 export default nextConfig;
