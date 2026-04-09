@@ -11,10 +11,10 @@ type DeveloperTestCardProps = {
 
 export function DeveloperTestCard({ test }: DeveloperTestCardProps) {
   return (
-    <article className="rounded-[1.125rem] border border-[#dfe3eb] bg-white px-5 py-5 shadow-[0_.25rem_1.125rem_rgba(15,23,42,0.04)] sm:px-6 sm:py-6">
+    <article className="rounded-[1.125rem] border border-(--color-border-card) bg-white px-5 py-5 shadow-[var(--shadow-subtle)] sm:px-6 sm:py-6">
       <div className="space-y-7">
         <div className="space-y-5">
-          <h3 className="text-[1.0625rem] leading-[1.4] font-semibold text-[#445168] sm:text-lg">
+          <h3 className="text-[1.0625rem] leading-[1.4] font-semibold text-(--color-text-primary) sm:text-lg">
             {test.title}
           </h3>
 
@@ -39,7 +39,7 @@ export function DeveloperTestCard({ test }: DeveloperTestCardProps) {
 
         <button
           type="button"
-          className="cursor-pointer rounded-[.6875rem] border border-[#8357ff] px-10 py-2.25 text-[.9375rem] font-semibold text-[#7a49ff] transition hover:bg-[#f7f2ff]"
+          className="cursor-pointer rounded-[.6875rem] border border-(--color-brand-border) px-10 py-2.25 text-[.9375rem] font-semibold text-(--color-brand-text) transition hover:bg-(--color-brand-hover)"
         >
           Start
         </button>

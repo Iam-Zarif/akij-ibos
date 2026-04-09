@@ -45,7 +45,7 @@ export function RichTextEditor({
     editorProps: {
       attributes: {
         class:
-          "min-h-23.75 px-4 py-4 text-[.9375rem] text-[#425069] outline-none ProseMirror",
+          "min-h-23.75 px-4 py-4 text-[.9375rem] text-(--color-text-heading) outline-none ProseMirror",
       },
     },
     onUpdate: ({ editor: currentEditor }) => {
@@ -67,34 +67,34 @@ export function RichTextEditor({
 
   if (!editor) {
     return (
-      <div className="rounded-lg border border-[#e5e8ef] bg-white">
-        <div className="flex h-10 items-center gap-4 border-b border-[#eff2f6] px-4 text-[#59657b]" />
-        <div className="min-h-23.75 px-4 py-4 text-[.9375rem] text-[#a7b1c2]" />
+      <div className="rounded-lg border border-(--color-border-primary) bg-white">
+        <div className="flex h-10 items-center gap-4 border-b border-(--color-border-editor) px-4 text-(--color-text-toolbar)" />
+        <div className="min-h-23.75 px-4 py-4 text-[.9375rem] text-(--color-placeholder)" />
       </div>
     );
   }
 
   return (
-    <div className="rounded-lg border border-[#e5e8ef] bg-white">
-      <div className="flex h-10 items-center gap-4 border-b border-[#eff2f6] px-4 text-[#59657b]">
+    <div className="rounded-lg border border-(--color-border-primary) bg-white">
+      <div className="flex h-10 items-center gap-4 border-b border-(--color-border-editor) px-4 text-(--color-text-toolbar)">
         <button
           type="button"
           onClick={() => editor.chain().focus().undo().run()}
-          className="cursor-pointer text-[#616b80] transition hover:text-[#425069]"
+          className="cursor-pointer text-(--color-text-toolbar-muted) transition hover:text-(--color-text-heading)"
         >
           <FiRotateCcw className="size-3.75" />
         </button>
         <button
           type="button"
           onClick={() => editor.chain().focus().redo().run()}
-          className="cursor-pointer text-[#616b80] transition hover:text-[#425069]"
+          className="cursor-pointer text-(--color-text-toolbar-muted) transition hover:text-(--color-text-heading)"
         >
           <FiRotateCw className="size-3.75" />
         </button>
         <button
           type="button"
           onClick={() => editor.chain().focus().setParagraph().run()}
-          className="flex cursor-pointer items-center gap-1 text-[.8125rem] transition hover:text-[#425069]"
+          className="flex cursor-pointer items-center gap-1 text-[.8125rem] transition hover:text-(--color-text-heading)"
         >
           Normal text
           <FiChevronDown className="size-3.5" />
@@ -102,7 +102,7 @@ export function RichTextEditor({
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className="flex cursor-pointer items-center gap-1 text-[.8125rem] transition hover:text-[#425069]"
+          className="flex cursor-pointer items-center gap-1 text-[.8125rem] transition hover:text-(--color-text-heading)"
         >
           <FiList className="size-3.75" />
           <FiChevronDown className="size-3.5" />
@@ -110,8 +110,8 @@ export function RichTextEditor({
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}
-          className={`cursor-pointer transition hover:text-[#425069] ${
-            editor.isActive("bold") ? "text-[#425069]" : ""
+          className={`cursor-pointer transition hover:text-(--color-text-heading) ${
+            editor.isActive("bold") ? "text-(--color-text-heading)" : ""
           }`}
         >
           <FiBold className="size-3.5" />
@@ -119,8 +119,8 @@ export function RichTextEditor({
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={`cursor-pointer transition hover:text-[#425069] ${
-            editor.isActive("italic") ? "text-[#425069]" : ""
+          className={`cursor-pointer transition hover:text-(--color-text-heading) ${
+            editor.isActive("italic") ? "text-(--color-text-heading)" : ""
           }`}
         >
           <FiItalic className="size-3.5" />
@@ -128,8 +128,8 @@ export function RichTextEditor({
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleUnderline().run()}
-          className={`cursor-pointer transition hover:text-[#425069] ${
-            editor.isActive("underline") ? "text-[#425069]" : ""
+          className={`cursor-pointer transition hover:text-(--color-text-heading) ${
+            editor.isActive("underline") ? "text-(--color-text-heading)" : ""
           }`}
         >
           <FiUnderline className="size-3.5" />

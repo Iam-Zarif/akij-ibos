@@ -3,7 +3,7 @@ import { FiMail, FiPhoneCall } from "react-icons/fi";
 
 export function AppFooter() {
   return (
-    <footer className="mt-auto bg-[#160b30]">
+    <footer className="mt-auto bg-(--color-footer)">
       <div className="mx-auto flex min-h-18.5 w-full max-w-340 flex-col gap-4 px-6 py-5 text-white sm:flex-row sm:items-center sm:justify-between sm:px-10">
         <div className="flex items-center gap-3 text-base text-white/92">
           <span>Powered by</span>

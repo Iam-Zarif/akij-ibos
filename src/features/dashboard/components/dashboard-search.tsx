@@ -38,8 +38,8 @@ function SearchSparkIcon() {
           y2="8.747"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#6C2CF2" />
-          <stop offset="1" stopColor="#8447FF" />
+          <stop stopColor="var(--color-search-spark-start)" />
+          <stop offset="1" stopColor="var(--color-search-spark-end)" />
         </linearGradient>
         <linearGradient
           id="sparkGradient"
@@ -49,8 +49,8 @@ function SearchSparkIcon() {
           y2="4.608"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#7D2AE8" />
-          <stop offset="1" stopColor="#D21FFF" />
+          <stop stopColor="var(--color-search-star-start)" />
+          <stop offset="1" stopColor="var(--color-search-star-end)" />
         </linearGradient>
       </defs>
     </svg>
@@ -65,12 +65,12 @@ export function DashboardSearch({ value, onChange }: DashboardSearchProps) {
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder="Search by exam title"
-        className="h-10 w-full rounded-[.6875rem] border border-[#c7a7ff] bg-white px-3.5 pr-12 text-[.8125rem] text-[#49556b] shadow-[0_.125rem_.5rem_rgba(123,63,246,0.14)] outline-none placeholder:text-[#c1c8d4] focus:border-[#895dff]"
+        className="h-10 w-full rounded-[.6875rem] border border-(--color-brand-search-border) bg-white px-3.5 pr-12 text-[.8125rem] text-(--color-text-body) shadow-[var(--shadow-search)] outline-none placeholder:text-(--color-placeholder-soft) focus:border-(--color-brand-search-focus)"
       />
       <button
         type="button"
         aria-label="Search tests"
-        className="absolute top-1/2 right-2.25 flex size-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-[#f2e8ff] text-[#a25bff]"
+        className="absolute top-1/2 right-2.25 flex size-6 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-(--color-brand-surface) text-(--color-brand-search-icon)"
       >
         <SearchSparkIcon />
       </button>

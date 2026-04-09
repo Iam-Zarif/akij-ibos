@@ -14,7 +14,7 @@ export function OnlineTestEmptyView() {
       <div className="mx-auto w-full max-w-340 space-y-7 sm:space-y-9">
         <section className="space-y-6">
           <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-            <h2 className="text-[1.3125rem] font-semibold text-[#425069]">
+            <h2 className="text-[1.3125rem] font-semibold text-(--color-text-heading)">
               Online Tests
             </h2>
 
@@ -23,7 +23,7 @@ export function OnlineTestEmptyView() {
 
               <Link
                 href="/online-test/create"
-                className="inline-flex h-10 cursor-pointer items-center justify-center rounded-[.6875rem] bg-[linear-gradient(90deg,#5f2eea_0%,#7b3ff6_100%)] px-6 text-center text-sm font-semibold text-white shadow-[0_.75rem_1.5rem_rgba(95,46,234,0.18)] transition hover:opacity-95 lg:min-w-36.5"
+                className="inline-flex h-10 cursor-pointer items-center justify-center rounded-[.6875rem] bg-[image:var(--gradient-brand)] px-6 text-center text-sm font-semibold text-white shadow-[var(--shadow-brand)] transition hover:opacity-95 lg:min-w-36.5"
               >
                 Create Online Test
               </Link>

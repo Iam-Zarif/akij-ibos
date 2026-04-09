@@ -39,16 +39,16 @@ export function BasicInfoSummary() {
   ];
 
   return (
-    <section className="mx-auto w-full max-w-239 rounded-[1.125rem] bg-white px-5 py-6 shadow-[0_.375rem_1.375rem_rgba(15,23,42,0.04)] sm:px-7 sm:py-7 lg:px-8">
+    <section className="mx-auto w-full max-w-239 rounded-[1.125rem] bg-white px-5 py-6 shadow-[var(--shadow-card)] sm:px-7 sm:py-7 lg:px-8">
       <div className="space-y-6">
         <div className="flex items-start justify-between gap-4">
-          <h3 className="text-lg font-semibold text-[#425069]">
+          <h3 className="text-lg font-semibold text-(--color-text-heading)">
             Basic Information
           </h3>
 
           <Link
             href="/online-test/create"
-            className="inline-flex cursor-pointer items-center gap-2 text-[.9375rem] font-semibold text-[#6f3ff5] transition hover:opacity-80"
+            className="inline-flex cursor-pointer items-center gap-2 text-[.9375rem] font-semibold text-(--color-brand-primary) transition hover:opacity-80"
           >
             <FiEdit2 className="size-4" />
             Edit
@@ -61,8 +61,8 @@ export function BasicInfoSummary() {
               key={item.label}
               className={item.className ? item.className : undefined}
             >
-              <p className="text-sm text-[#8b95a7]">{item.label}</p>
-              <p className="mt-1 text-base font-semibold text-[#445168]">
+              <p className="text-sm text-(--color-text-muted)">{item.label}</p>
+              <p className="mt-1 text-base font-semibold text-(--color-text-primary)">
                 {item.value}
               </p>
             </div>

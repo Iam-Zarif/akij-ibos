@@ -39,7 +39,7 @@ function toEditorHtml(value: string) {
 
 function ChoiceIndicator({ label }: { label: string }) {
   return (
-    <span className="inline-flex size-5.5 items-center justify-center rounded-full border border-[#c9d0dc] text-[.8125rem] font-medium text-[#7b8798]">
+    <span className="inline-flex size-5.5 items-center justify-center rounded-full border border-(--color-border-option) text-[.8125rem] font-medium text-(--color-text-subtle)">
       {label}
     </span>
   );
@@ -234,22 +234,22 @@ export function QuestionModal({
   };
 
   return (
-    <div className="fixed inset-0 z-30 flex items-start justify-center overflow-y-auto bg-[rgba(45,51,64,0.42)] px-4 py-6 sm:px-6">
-      <div className="w-full max-w-162.5 rounded-[1.125rem] bg-white shadow-[0_1.5rem_4rem_rgba(15,23,42,0.22)]">
+    <div className="fixed inset-0 z-30 flex items-start justify-center overflow-y-auto bg-(--color-overlay) px-4 py-6 sm:px-6">
+      <div className="w-full max-w-162.5 rounded-[1.125rem] bg-white shadow-[var(--shadow-modal)]">
         <div className="flex items-center justify-between gap-4 px-6 pt-5 pb-4">
           <div className="flex items-center gap-2">
-            <span className="flex size-5.5 items-center justify-center rounded-full border border-[#d6dce7] text-[.8125rem] font-medium text-[#7b8798]">
+            <span className="flex size-5.5 items-center justify-center rounded-full border border-(--color-border-question) text-[.8125rem] font-medium text-(--color-text-subtle)">
               {questionNumber}
             </span>
-            <h3 className="text-xl font-semibold text-[#425069]">
+            <h3 className="text-xl font-semibold text-(--color-text-heading)">
               Question {questionNumber}
             </h3>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 text-sm font-medium text-[#4d5970]">
+            <div className="flex items-center gap-2 text-sm font-medium text-(--color-text-control)">
               <span>Score:</span>
-              <span className="inline-flex h-7.5 min-w-11 items-center justify-center rounded-[.5625rem] border border-[#e3e7ef] px-3 text-[.8125rem] text-[#7b8798]">
+              <span className="inline-flex h-7.5 min-w-11 items-center justify-center rounded-[.5625rem] border border-(--color-border-score) px-3 text-[.8125rem] text-(--color-text-subtle)">
                 {isManual ? "5" : "1"}
               </span>
             </div>
@@ -259,7 +259,7 @@ export function QuestionModal({
               onChange={(event) =>
                 handleQuestionTypeChange(event.target.value as QuestionVariant)
               }
-              className="inline-flex h-7.5 cursor-pointer appearance-none rounded-[.5625rem] border border-[#e3e7ef] px-3 text-[.8125rem] text-[#4d5970] outline-none"
+              className="inline-flex h-7.5 cursor-pointer appearance-none rounded-[.5625rem] border border-(--color-border-score) px-3 text-[.8125rem] text-(--color-text-control) outline-none"
             >
               <option value="manual">{questionTypeLabelMap.manual}</option>
               <option value="checkbox">{questionTypeLabelMap.checkbox}</option>
@@ -269,7 +269,7 @@ export function QuestionModal({
             <button
               type="button"
               onClick={() => router.push("/online-test/questions")}
-              className="cursor-pointer text-[#7b8798] transition hover:text-[#425069]"
+              className="cursor-pointer text-(--color-text-subtle) transition hover:text-(--color-text-heading)"
             >
               <FiTrash2 className="size-4.5" />
             </button>
@@ -286,14 +286,14 @@ export function QuestionModal({
           {isManual ? (
             <div className="space-y-3">
               <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2 text-sm text-[#7b8798]">
+                <div className="flex items-center gap-2 text-sm text-(--color-text-subtle)">
                   <ChoiceIndicator label="A" />
                 </div>
 
                 <button
                   type="button"
                   onClick={() => router.push("/online-test/questions")}
-                  className="cursor-pointer text-[#7b8798] transition hover:text-[#425069]"
+                  className="cursor-pointer text-(--color-text-subtle) transition hover:text-(--color-text-heading)"
                 >
                   <FiTrash2 className="size-4.25" />
                 </button>
@@ -310,23 +310,27 @@ export function QuestionModal({
               {options.map((choice) => (
                 <div key={choice.id} className="space-y-3">
                   <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-2 text-sm text-[#7b8798]">
+                    <div className="flex items-center gap-2 text-sm text-(--color-text-subtle)">
                       <ChoiceIndicator label={choice.id} />
                       <button
                         type="button"
                         onClick={() => handleToggleCorrect(choice.id)}
-                        className="inline-flex cursor-pointer items-center text-[#b9c0cc]"
+                        className="inline-flex cursor-pointer items-center text-(--color-icon-choice)"
                       >
                         {questionType === "checkbox" ? (
                           <FiCheckSquare
                             className={`size-4.5 ${
-                              choice.isCorrect ? "text-[#6938ef]" : ""
+                              choice.isCorrect
+                                ? "text-(--color-brand-strong)"
+                                : ""
                             }`}
                           />
                         ) : (
                           <FiCircle
                             className={`size-4.5 ${
-                              choice.isCorrect ? "text-[#6938ef]" : ""
+                              choice.isCorrect
+                                ? "text-(--color-brand-strong)"
+                                : ""
                             }`}
                           />
                         )}
@@ -343,7 +347,7 @@ export function QuestionModal({
                     <button
                       type="button"
                       onClick={() => handleRemoveOption(choice.id)}
-                      className="cursor-pointer text-[#7b8798] transition hover:text-[#425069]"
+                      className="cursor-pointer text-(--color-text-subtle) transition hover:text-(--color-text-heading)"
                     >
                       <FiTrash2 className="size-4.25" />
                     </button>
@@ -362,7 +366,7 @@ export function QuestionModal({
               <button
                 type="button"
                 onClick={handleAddOption}
-                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-[#6f3ff5] transition hover:opacity-80"
+                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-(--color-brand-primary) transition hover:opacity-80"
               >
                 <FiPlus className="size-4" />
                 Another options
@@ -370,18 +374,18 @@ export function QuestionModal({
             </>
           )}
 
-          <div className="flex items-center justify-end gap-3 border-t border-[#edf1f6] pt-4">
+          <div className="flex items-center justify-end gap-3 border-t border-(--color-border-secondary) pt-4">
             <button
               type="button"
               onClick={() => handleSave(false)}
-              className="inline-flex h-8.5 cursor-pointer items-center justify-center rounded-lg border border-[#8b5cff] px-10 text-sm font-semibold text-[#7a49ff] transition hover:bg-[#f7f2ff]"
+              className="inline-flex h-8.5 cursor-pointer items-center justify-center rounded-lg border border-(--color-border-brand-strong) px-10 text-sm font-semibold text-(--color-brand-text) transition hover:bg-(--color-brand-hover)"
             >
               Save
             </button>
             <button
               type="button"
               onClick={() => handleSave(true)}
-              className="inline-flex h-8.5 cursor-pointer items-center justify-center rounded-lg bg-[linear-gradient(90deg,#5f2eea_0%,#7b3ff6_100%)] px-8 text-sm font-semibold text-white shadow-[0_.625rem_1.5rem_rgba(95,46,234,0.18)] transition hover:opacity-95"
+              className="inline-flex h-8.5 cursor-pointer items-center justify-center rounded-lg bg-[image:var(--gradient-brand)] px-8 text-sm font-semibold text-white shadow-[0_.625rem_1.5rem_rgba(95,46,234,0.18)] transition hover:opacity-95"
             >
               Save &amp; Add More
             </button>

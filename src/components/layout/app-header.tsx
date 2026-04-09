@@ -19,7 +19,7 @@ export function AppHeader() {
       : "Dashboard";
 
   return (
-    <header className="fixed top-0 right-0 left-0 z-40 border-b border-[#ececec] bg-white">
+    <header className="fixed top-0 right-0 left-0 z-40 border-b border-(--color-border-header) bg-white">
       <div className="mx-auto grid h-18 w-full max-w-340 grid-cols-[7.25rem_minmax(0,1fr)_13.75rem] items-center gap-3 px-4 sm:px-6 lg:px-10">
         <div className="w-24.5 shrink-0 sm:w-29">
           <Image
@@ -31,26 +31,26 @@ export function AppHeader() {
             className="h-auto w-full"
           />
         </div>
-        <h1 className="truncate pl-2 text-[1.0625rem] leading-none font-semibold text-[#3f4a5a] sm:pl-4 sm:text-lg">
+        <h1 className="truncate pl-2 text-[1.0625rem] leading-none font-semibold text-(--color-foreground) sm:pl-4 sm:text-lg">
           {isDashboard || isOnlineTest ? headerTitle : "Akij Resource"}
         </h1>
         {(isDashboard || isOnlineTest) && activeUser ? (
           <button
             type="button"
-            className="ml-auto flex cursor-pointer items-center gap-2 rounded-xl transition hover:bg-[#f8f9fc] sm:gap-3"
+            className="ml-auto flex cursor-pointer items-center gap-2 rounded-xl transition hover:bg-(--color-hover-surface) sm:gap-3"
           >
-            <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-[#eef1f6] text-[#b3bac7]">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-(--color-avatar-surface) text-(--color-icon-disabled)">
               <FiUser className="size-4.5" />
             </div>
             <div className="min-w-0 text-left leading-[1.2]">
-              <p className="truncate text-sm font-semibold text-[#455065]">
+              <p className="truncate text-sm font-semibold text-(--color-text-secondary)">
                 {activeUser.name}
               </p>
-              <p className="truncate text-xs text-[#8b95a7]">
+              <p className="truncate text-xs text-(--color-text-muted)">
                 Ref.ID- {activeUser.refId}
               </p>
             </div>
-            <FiChevronDown className="size-4 shrink-0 text-[#6c7688]" />
+            <FiChevronDown className="size-4 shrink-0 text-(--color-text-subtle)" />
           </button>
         ) : (
           <div className="w-full" />

@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { AppFooter } from "@/components/layout/app-footer";
 import { AppHeader } from "@/components/layout/app-header";
 import { AppProvider } from "@/components/providers/app-provider";
+import { THEME_VARS } from "@/theme/color";
 
 import "./globals.css";
 
@@ -29,7 +30,10 @@ export default function RootLayout({
       className={`${inter.variable} h-full antialiased`}
       data-scroll-behavior="smooth"
     >
-      <body className="min-h-full bg-[#f7f8fb] text-[#3f4a5a]">
+      <body
+        style={THEME_VARS}
+        className="min-h-full bg-(--color-background) text-(--color-foreground)"
+      >
         <AppProvider>
           <div className="flex min-h-screen flex-col">
             <AppHeader />

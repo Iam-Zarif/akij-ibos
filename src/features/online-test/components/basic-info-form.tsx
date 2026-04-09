@@ -14,9 +14,9 @@ function FieldLabel({
   required?: boolean;
 }) {
   return (
-    <label className="block text-sm font-medium text-[#4c5970]">
+    <label className="block text-sm font-medium text-(--color-text-label)">
       {children}
-      {required ? <span className="text-[#ff6b6b]"> *</span> : null}
+      {required ? <span className="text-(--color-danger-soft)"> *</span> : null}
     </label>
   );
 }
@@ -39,7 +39,7 @@ function TextInput({
       value={value}
       onChange={(event) => onChange(event.target.value)}
       placeholder={placeholder}
-      className="h-12 w-full rounded-lg border border-[#e5e8ef] bg-white px-4 text-[.9375rem] text-[#425069] outline-none placeholder:text-[#a7b1c2]"
+      className="h-12 w-full rounded-lg border border-(--color-border-primary) bg-white px-4 text-[.9375rem] text-(--color-text-heading) outline-none placeholder:text-(--color-placeholder)"
     />
   );
 }
@@ -93,18 +93,18 @@ function TimePickerField({
       <button
         type="button"
         onClick={() => setIsOpen((current) => !current)}
-        className={`flex h-12 w-full cursor-pointer items-center rounded-lg border border-[#e5e8ef] bg-white px-4 pr-11 text-left text-[.9375rem] outline-none ${
-          value ? "text-[#425069]" : "text-[#a7b1c2]"
+        className={`flex h-12 w-full cursor-pointer items-center rounded-lg border border-(--color-border-primary) bg-white px-4 pr-11 text-left text-[.9375rem] outline-none ${
+          value ? "text-(--color-text-heading)" : "text-(--color-placeholder)"
         }`}
       >
         <span>{value || placeholder}</span>
       </button>
-      <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[#a9b2c1]">
+      <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-(--color-icon-muted)">
         <FiClock className="size-4.5" />
       </span>
 
       {isOpen ? (
-        <div className="absolute bottom-14 left-0 z-20 w-full overflow-hidden rounded-[.875rem] border border-[#e5e8ef] bg-white shadow-[0_1.125rem_3rem_rgba(15,23,42,0.12)]">
+        <div className="absolute bottom-14 left-0 z-20 w-full overflow-hidden rounded-[.875rem] border border-(--color-border-primary) bg-white shadow-[var(--shadow-popover)]">
           <div className="max-h-55 overflow-y-auto py-2">
             {timeOptions.map((option) => (
               <button
@@ -114,10 +114,10 @@ function TimePickerField({
                   onChange(option);
                   setIsOpen(false);
                 }}
-                className={`flex w-full cursor-pointer items-center px-4 py-2 text-left text-sm transition hover:bg-[#f7f2ff] ${
+                className={`flex w-full cursor-pointer items-center px-4 py-2 text-left text-sm transition hover:bg-(--color-brand-hover) ${
                   value === option
-                    ? "bg-[#f2e8ff] text-[#6938ef]"
-                    : "text-[#425069]"
+                    ? "bg-(--color-brand-surface) text-(--color-brand-strong)"
+                    : "text-(--color-text-heading)"
                 }`}
               >
                 {option}
@@ -146,8 +146,8 @@ function SelectField({
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className={`h-12 w-full cursor-pointer appearance-none rounded-lg border border-[#e5e8ef] bg-white px-4 pr-11 text-[.9375rem] outline-none ${
-          value ? "text-[#425069]" : "text-[#a7b1c2]"
+        className={`h-12 w-full cursor-pointer appearance-none rounded-lg border border-(--color-border-primary) bg-white px-4 pr-11 text-[.9375rem] outline-none ${
+          value ? "text-(--color-text-heading)" : "text-(--color-placeholder)"
         }`}
       >
         <option value="">{placeholder}</option>
@@ -157,7 +157,7 @@ function SelectField({
           </option>
         ))}
       </select>
-      <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-[#a9b2c1]">
+      <span className="pointer-events-none absolute top-1/2 right-4 -translate-y-1/2 text-(--color-icon-muted)">
         <FiChevronDown className="size-4.5" />
       </span>
     </div>
@@ -175,9 +175,9 @@ export function BasicInfoForm() {
   };
 
   return (
-    <section className="mx-auto w-full max-w-239 rounded-[1.125rem] bg-white px-5 py-6 shadow-[0_.375rem_1.375rem_rgba(15,23,42,0.04)] sm:px-7 sm:py-7 lg:px-8">
+    <section className="mx-auto w-full max-w-239 rounded-[1.125rem] bg-white px-5 py-6 shadow-[var(--shadow-card)] sm:px-7 sm:py-7 lg:px-8">
       <div className="space-y-6">
-        <h3 className="text-lg font-semibold text-[#425069]">
+        <h3 className="text-lg font-semibold text-(--color-text-heading)">
           Basic Information
         </h3>
 

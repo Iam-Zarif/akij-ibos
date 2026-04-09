@@ -25,10 +25,10 @@ export function OnlineTestQuestionsView({
             questionsState="complete"
           />
 
-          <section className="mx-auto flex w-full max-w-239 flex-col rounded-[1.125rem] bg-white px-5 py-6 shadow-[0_.375rem_1.375rem_rgba(15,23,42,0.04)] sm:px-7 lg:px-8">
+          <section className="mx-auto flex w-full max-w-239 flex-col rounded-[1.125rem] bg-white px-5 py-6 shadow-[var(--shadow-card)] sm:px-7 lg:px-8">
             <Link
               href="/online-test/questions?modal=true&type=checkbox"
-              className="inline-flex h-13.5 cursor-pointer items-center justify-center rounded-[.875rem] bg-[linear-gradient(90deg,#5f2eea_0%,#7b3ff6_100%)] px-8 text-lg font-semibold text-white shadow-[0_.75rem_1.5rem_rgba(95,46,234,0.18)] transition hover:opacity-95"
+              className="inline-flex h-13.5 cursor-pointer items-center justify-center rounded-[.875rem] bg-[image:var(--gradient-brand)] px-8 text-lg font-semibold text-white shadow-[var(--shadow-brand)] transition hover:opacity-95"
             >
               Add Question
             </Link>

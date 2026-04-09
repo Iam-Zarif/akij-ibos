@@ -11,17 +11,17 @@ export function OnlineTestBasicInfoView() {
 
         <BasicInfoForm />
 
-        <section className="mx-auto flex w-full max-w-239 flex-col gap-4 rounded-[1.125rem] bg-white px-5 py-6 shadow-[0_.375rem_1.375rem_rgba(15,23,42,0.04)] sm:flex-row sm:items-center sm:justify-between sm:px-7 lg:px-8">
+        <section className="mx-auto flex w-full max-w-239 flex-col gap-4 rounded-[1.125rem] bg-white px-5 py-6 shadow-[var(--shadow-card)] sm:flex-row sm:items-center sm:justify-between sm:px-7 lg:px-8">
           <button
             type="button"
-            className="inline-flex h-11.5 cursor-pointer items-center justify-center rounded-xl border border-[#d7ddea] px-16 text-[.9375rem] font-semibold text-[#4d5970] transition hover:bg-[#f8f9fc]"
+            className="inline-flex h-11.5 cursor-pointer items-center justify-center rounded-xl border border-(--color-border-soft) px-16 text-[.9375rem] font-semibold text-(--color-text-control) transition hover:bg-(--color-hover-surface)"
           >
             Cancel
           </button>
 
           <Link
             href="/online-test/create/view"
-            className="inline-flex h-11.5 cursor-pointer items-center justify-center rounded-xl bg-[linear-gradient(90deg,#5f2eea_0%,#7b3ff6_100%)] px-8 text-[.9375rem] font-semibold text-white shadow-[0_.75rem_1.5rem_rgba(95,46,234,0.18)] transition hover:opacity-95"
+            className="inline-flex h-11.5 cursor-pointer items-center justify-center rounded-xl bg-[image:var(--gradient-brand)] px-8 text-[.9375rem] font-semibold text-white shadow-[var(--shadow-brand)] transition hover:opacity-95"
           >
             Save &amp; Continue
           </Link>
