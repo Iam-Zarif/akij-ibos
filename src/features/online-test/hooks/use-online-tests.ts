@@ -10,12 +10,15 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 export function useOnlineTests() {
   const dispatch = useAppDispatch();
   const tests = useAppSelector((state) => state.onlineTest.tests);
+  const hasLoadedTests = useAppSelector(
+    (state) => state.onlineTest.hasLoadedTests,
+  );
   const activeUser = useAppSelector((state) => state.auth.activeUser);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    if (!activeUser) {
+    if (!activeUser || hasLoadedTests) {
       return;
     }
 
@@ -36,7 +39,7 @@ export function useOnlineTests() {
     }
 
     void loadOnlineTests();
-  }, [activeUser, dispatch]);
+  }, [activeUser, dispatch, hasLoadedTests]);
 
   return {
     tests,

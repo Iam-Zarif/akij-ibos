@@ -6,6 +6,7 @@ import type { PreviewQuestion } from "@/features/online-test/types/question.type
 
 type OnlineTestState = {
   tests: OnlineTestRecord[];
+  hasLoadedTests: boolean;
   currentTestId: string | null;
   basicInfoDraft: BasicInfoDraft;
   savedQuestions: PreviewQuestion[];
@@ -24,6 +25,7 @@ const initialBasicInfoDraft: BasicInfoDraft = {
 
 const initialState: OnlineTestState = {
   tests: [],
+  hasLoadedTests: false,
   currentTestId: null,
   basicInfoDraft: {
     ...initialBasicInfoDraft,
@@ -40,6 +42,7 @@ const onlineTestSlice = createSlice({
     },
     setOnlineTests(state, action: PayloadAction<OnlineTestRecord[]>) {
       state.tests = action.payload;
+      state.hasLoadedTests = true;
     },
     setCurrentOnlineTest(
       state,

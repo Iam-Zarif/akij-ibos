@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import { useEffect, useRef, type ReactNode } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { Provider } from "react-redux";
 
 import { fetchCurrentUser } from "@/features/auth/services/auth.service";
@@ -21,19 +21,22 @@ type AppProviderProps = {
 function AuthPersistence() {
   const dispatch = useAppDispatch();
   const pathname = usePathname();
+  const router = useRouter();
   const activeUser = useAppSelector((state) => state.auth.activeUser);
   const isHydrated = useAppSelector((state) => state.auth.isHydrated);
+  const hasAttemptedHydration = useRef(false);
 
   useEffect(() => {
+    if (hasAttemptedHydration.current) {
+      return;
+    }
+
+    hasAttemptedHydration.current = true;
+
     const token = readAuthToken();
 
     if (!token) {
       dispatch(hydrateAuthState(null));
-
-      if (!pathname.startsWith("/auth/login")) {
-        window.location.replace("/auth/login");
-      }
-
       return;
     }
 
@@ -44,12 +47,18 @@ function AuthPersistence() {
       .catch(() => {
         clearAuthToken();
         dispatch(hydrateAuthState(null));
-
-        if (!pathname.startsWith("/auth/login")) {
-          window.location.replace("/auth/login");
-        }
       });
-  }, [dispatch, pathname]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!isHydrated) {
+      return;
+    }
+
+    if (!activeUser && !pathname.startsWith("/auth/login")) {
+      router.replace("/auth/login");
+    }
+  }, [activeUser, isHydrated, pathname, router]);
 
   useEffect(() => {
     if (!isHydrated || activeUser) {
