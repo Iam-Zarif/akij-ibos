@@ -1,6 +1,6 @@
-export type UserRole = "developer" | "recruiter" | "interviewer";
+export type UserRole = "candidate" | "employer";
 
-export type MockUser = {
+export type AppUser = {
   id: string;
   name: string;
   email: string;

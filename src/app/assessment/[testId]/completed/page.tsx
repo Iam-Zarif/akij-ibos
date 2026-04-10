@@ -1,4 +1,4 @@
-import { AssessmentCompletedView } from "@/views/developer/assessment-completed-view";
+import { AssessmentCompletedView } from "@/views/candidate/assessment-completed-view";
 
 type AssessmentCompletedPageProps = {
   params: Promise<{

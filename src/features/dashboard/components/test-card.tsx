@@ -3,10 +3,10 @@
 import { FiFileText, FiMapPin, FiUsers } from "react-icons/fi";
 
 import { MetricItem } from "@/features/dashboard/components/metric-item";
-import type { RecruiterOnlineTest } from "@/features/dashboard/types/dashboard.types";
+import type { EmployerOnlineTest } from "@/features/dashboard/types/dashboard.types";
 
 type TestCardProps = {
-  test: RecruiterOnlineTest;
+  test: EmployerOnlineTest;
 };
 
 export function TestCard({ test }: TestCardProps) {

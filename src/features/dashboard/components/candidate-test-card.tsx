@@ -4,13 +4,13 @@ import Link from "next/link";
 import { FiClock, FiFileText, FiXCircle } from "react-icons/fi";
 
 import { MetricItem } from "@/features/dashboard/components/metric-item";
-import type { DeveloperOnlineTest } from "@/features/dashboard/types/dashboard.types";
+import type { CandidateOnlineTest } from "@/features/dashboard/types/dashboard.types";
 
-type DeveloperTestCardProps = {
-  test: DeveloperOnlineTest;
+type CandidateTestCardProps = {
+  test: CandidateOnlineTest;
 };
 
-export function DeveloperTestCard({ test }: DeveloperTestCardProps) {
+export function CandidateTestCard({ test }: CandidateTestCardProps) {
   return (
     <article className="rounded-[1.125rem] border border-(--color-border-card) bg-white px-5 py-5 shadow-(--shadow-subtle) sm:px-6 sm:py-6">
       <div className="space-y-7">

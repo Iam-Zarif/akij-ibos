@@ -1,4 +1,4 @@
-export type RecruiterOnlineTest = {
+export type EmployerOnlineTest = {
   id: string;
   title: string;
   candidates: string;
@@ -6,7 +6,7 @@ export type RecruiterOnlineTest = {
   examSlots: string;
 };
 
-export type DeveloperOnlineTest = {
+export type CandidateOnlineTest = {
   id: string;
   title: string;
   duration: string;

@@ -1,4 +1,4 @@
-import { OnlineTestQuestionsPreviewView } from "@/views/recruiter/online-test-questions-preview-view";
+import { OnlineTestQuestionsPreviewView } from "@/views/employer/online-test-questions-preview-view";
 
 export default async function OnlineTestQuestionsPreviewPage({
   searchParams,

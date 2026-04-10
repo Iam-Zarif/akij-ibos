@@ -1,9 +1,9 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import type { MockUser } from "@/features/auth/types/auth.types";
+import type { AppUser } from "@/features/auth/types/auth.types";
 
 type AuthState = {
-  activeUser: MockUser | null;
+  activeUser: AppUser | null;
   isHydrated: boolean;
 };
 
@@ -16,11 +16,11 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    hydrateAuthState(state, action: PayloadAction<MockUser | null>) {
+    hydrateAuthState(state, action: PayloadAction<AppUser | null>) {
       state.activeUser = action.payload;
       state.isHydrated = true;
     },
-    signInSuccess(state, action: PayloadAction<MockUser>) {
+    signInSuccess(state, action: PayloadAction<AppUser>) {
       state.activeUser = action.payload;
       state.isHydrated = true;
     },

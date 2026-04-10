@@ -1,4 +1,4 @@
-import { OnlineTestBasicInfoSummaryView } from "@/views/recruiter/online-test-basic-info-summary-view";
+import { OnlineTestBasicInfoSummaryView } from "@/views/employer/online-test-basic-info-summary-view";
 
 export default async function OnlineTestCreateViewPage({
   searchParams,

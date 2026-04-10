@@ -1,8 +1,8 @@
 "use client";
 
 import { useAppSelector } from "@/store/hooks";
-import { DeveloperDashboardView } from "@/views/developer/dashboard-view";
-import { RecruiterDashboardView } from "@/views/recruiter/dashboard-view";
+import { CandidateDashboardView } from "@/views/candidate/dashboard-view";
+import { EmployerDashboardView } from "@/views/employer/dashboard-view";
 
 export function DashboardView() {
   const { activeUser, isHydrated } = useAppSelector((state) => state.auth);
@@ -25,9 +25,9 @@ export function DashboardView() {
     );
   }
 
-  if (activeUser?.role === "developer") {
-    return <DeveloperDashboardView />;
+  if (activeUser?.role === "candidate") {
+    return <CandidateDashboardView />;
   }
 
-  return <RecruiterDashboardView />;
+  return <EmployerDashboardView />;
 }

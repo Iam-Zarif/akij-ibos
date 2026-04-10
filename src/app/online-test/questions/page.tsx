@@ -1,4 +1,4 @@
-import { OnlineTestQuestionsView } from "@/views/recruiter/online-test-questions-view";
+import { OnlineTestQuestionsView } from "@/views/employer/online-test-questions-view";
 import type { QuestionVariant } from "@/features/online-test/types/question.types";
 
 const allowedQuestionTypes: QuestionVariant[] = ["checkbox", "radio", "manual"];

@@ -1,33 +1,29 @@
 "use client";
 
+import Link from "next/link";
+import { useMemo } from "react";
 import { FiChevronDown, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
-import { DashboardSearch } from "@/features/dashboard/components/dashboard-search";
-import { DeveloperTestCard } from "@/features/dashboard/components/developer-test-card";
 import { EmptyOnlineTestState } from "@/features/dashboard/components/empty-online-test-state";
+import { DashboardSearch } from "@/features/dashboard/components/dashboard-search";
 import { useDashboardSearch } from "@/features/dashboard/hooks/use-dashboard-search";
-import type { DeveloperOnlineTest } from "@/features/dashboard/types/dashboard.types";
+import { TestCard } from "@/features/dashboard/components/test-card";
+import type { EmployerOnlineTest } from "@/features/dashboard/types/dashboard.types";
 import { useOnlineTests } from "@/features/online-test/hooks/use-online-tests";
-import { useMemo } from "react";
 
-export function DeveloperDashboardView() {
+export function EmployerDashboardView() {
   const { tests, isLoading, errorMessage } = useOnlineTests();
-  const developerTests = useMemo<DeveloperOnlineTest[]>(
-    () =>
-      tests.map((test) => ({
-        id: test.id,
-        title: test.title,
-        duration: `${test.duration || "0"} min`,
-        questions: String(
-          test.savedQuestions.length || Number(test.totalQuestionSet) || 0,
-        ),
-        negativeMarking: test.negativeMarking || "-0.25/wrong",
-      })),
-    [tests],
-  );
-  const { filteredItems, query, setQuery } = useDashboardSearch(developerTests);
-  const hasTests = developerTests.length > 0;
-  const hasVisibleTests = filteredItems.length > 0;
+  const employerTests = useMemo<EmployerOnlineTest[]>(() => {
+    return tests.map((test) => ({
+      id: test.id,
+      title: test.title,
+      candidates: test.totalCandidates || "Not Set",
+      questionSet: test.totalQuestionSet || "Not Set",
+      examSlots: test.totalSlots || "Not Set",
+    }));
+  }, [tests]);
+  const { filteredItems, query, setQuery } = useDashboardSearch(employerTests);
+  const hasTests = employerTests.length > 0;
 
   return (
     <main className="flex flex-1 flex-col px-4 py-7 sm:px-6 sm:py-9 lg:px-10">
@@ -40,6 +36,13 @@ export function DeveloperDashboardView() {
 
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-end">
               <DashboardSearch value={query} onChange={setQuery} />
+
+              <Link
+                href="/online-test/create"
+                className="inline-flex h-10 cursor-pointer items-center justify-center rounded-[.6875rem] bg-(image:--gradient-brand) px-6 text-center text-sm font-semibold text-white shadow-(--shadow-brand) transition hover:opacity-95 lg:min-w-36.5"
+              >
+                Create Online Test
+              </Link>
             </div>
           </div>
 
@@ -51,18 +54,14 @@ export function DeveloperDashboardView() {
             <div className="rounded-[1.125rem] bg-red-600 px-6 py-8 text-sm text-white shadow-(--shadow-card)">
               {errorMessage}
             </div>
+          ) : hasTests ? (
+            <div className="grid gap-4 xl:grid-cols-2">
+              {filteredItems.map((test) => (
+                <TestCard key={test.id} test={test} />
+              ))}
+            </div>
           ) : (
-            <>
-              {hasVisibleTests ? (
-                <div className="grid gap-4 xl:grid-cols-2">
-                  {filteredItems.map((test) => (
-                    <DeveloperTestCard key={test.id} test={test} />
-                  ))}
-                </div>
-              ) : (
-                <EmptyOnlineTestState />
-              )}
-            </>
+            <EmptyOnlineTestState />
           )}
         </section>
 

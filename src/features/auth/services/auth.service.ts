@@ -1,18 +1,18 @@
 "use client";
 
 import { apiClient } from "@/lib/api-client";
-import type { MockUser } from "@/features/auth/types/auth.types";
+import type { AppUser } from "@/features/auth/types/auth.types";
 
 type LoginResponse = {
   data: {
-    user: MockUser;
+    user: AppUser;
     token: string;
   };
   message: string;
 };
 
 type MeResponse = {
-  data: MockUser;
+  data: AppUser;
 };
 
 export async function loginUser(identifier: string, password: string) {

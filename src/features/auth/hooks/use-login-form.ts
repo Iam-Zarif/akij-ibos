@@ -8,8 +8,8 @@ import { useRouter } from "next/navigation";
 import { loginSchema } from "@/features/auth/schemas/login.schema";
 import { loginUser } from "@/features/auth/services/auth.service";
 import type {
+  AppUser,
   LoginFormValues,
-  MockUser,
 } from "@/features/auth/types/auth.types";
 import {
   writeAuthToken,
@@ -24,7 +24,7 @@ type SubmitState = "idle" | "loading" | "success" | "error";
 export function useLoginForm() {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const [signedInUser, setSignedInUser] = useState<MockUser | null>(null);
+  const [signedInUser, setSignedInUser] = useState<AppUser | null>(null);
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
 
   const form = useForm<LoginFormValues>({
