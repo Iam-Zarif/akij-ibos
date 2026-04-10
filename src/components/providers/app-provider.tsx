@@ -8,6 +8,8 @@ import { fetchCurrentUser } from "@/features/auth/services/auth.service";
 import {
   clearAuthToken,
   readAuthToken,
+  readAuthUser,
+  writeAuthUser,
 } from "@/features/auth/utils/auth-cookie";
 import { store } from "@/store";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -40,8 +42,15 @@ function AuthPersistence() {
       return;
     }
 
+    const cachedUser = readAuthUser();
+
+    if (cachedUser) {
+      dispatch(hydrateAuthState(cachedUser));
+    }
+
     fetchCurrentUser()
       .then((user) => {
+        writeAuthUser(user);
         dispatch(hydrateAuthState(user));
       })
       .catch(() => {

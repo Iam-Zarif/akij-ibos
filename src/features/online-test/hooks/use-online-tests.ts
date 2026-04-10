@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import { fetchOnlineTests } from "@/features/online-test/services/online-test.service";
+import { readAuthToken } from "@/features/auth/utils/auth-cookie";
 import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { setOnlineTests } from "@/store/slices/online-test-slice";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
@@ -13,12 +14,11 @@ export function useOnlineTests() {
   const hasLoadedTests = useAppSelector(
     (state) => state.onlineTest.hasLoadedTests,
   );
-  const activeUser = useAppSelector((state) => state.auth.activeUser);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    if (!activeUser || hasLoadedTests) {
+    if (hasLoadedTests || !readAuthToken()) {
       return;
     }
 
@@ -39,7 +39,7 @@ export function useOnlineTests() {
     }
 
     void loadOnlineTests();
-  }, [activeUser, dispatch, hasLoadedTests]);
+  }, [dispatch, hasLoadedTests]);
 
   return {
     tests,

@@ -11,7 +11,10 @@ import type {
   LoginFormValues,
   MockUser,
 } from "@/features/auth/types/auth.types";
-import { writeAuthToken } from "@/features/auth/utils/auth-cookie";
+import {
+  writeAuthToken,
+  writeAuthUser,
+} from "@/features/auth/utils/auth-cookie";
 import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { useAppDispatch } from "@/store/hooks";
 import { signInSuccess } from "@/store/slices/auth-slice";
@@ -38,6 +41,7 @@ export function useLoginForm() {
     try {
       const result = await loginUser(values.identifier, values.password);
       writeAuthToken(result.token);
+      writeAuthUser(result.user);
       dispatch(signInSuccess(result.user));
       setSignedInUser(result.user);
       setSubmitState("success");

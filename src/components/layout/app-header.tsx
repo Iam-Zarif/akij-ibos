@@ -12,12 +12,11 @@ export function AppHeader() {
   const isDashboard = pathname === "/dashboard";
   const isOnlineTest = pathname.startsWith("/online-test");
   const isAssessment = pathname.startsWith("/assessment");
-  const isDeveloperDashboard = isDashboard && activeUser?.role === "developer";
-  const headerTitle = isOnlineTest
-    ? "Online Test"
-    : isDeveloperDashboard
-      ? "Akij Resource"
-      : "Dashboard";
+  const headerTitle = isDashboard
+    ? "Dashboard"
+    : isOnlineTest
+      ? "Online Test"
+      : "Akij Resource";
   const shouldShowProfile =
     (isDashboard || isOnlineTest || isAssessment) && activeUser;
 
