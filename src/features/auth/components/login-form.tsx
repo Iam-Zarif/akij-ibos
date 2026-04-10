@@ -21,6 +21,10 @@ export function LoginForm() {
         : submitState === "error"
           ? "Invalid Credentials"
           : "Sign In";
+  const submitButtonClassName =
+    submitState === "error"
+      ? "bg-red-600 shadow-none"
+      : "bg-(image:--gradient-brand) shadow-(--shadow-brand-strong)";
 
   return (
     <div className="w-full max-w-130 rounded-[1.125rem] border border-(--color-border-login-card) bg-white px-7 py-8 shadow-[0_.375rem_1.125rem_rgba(17,24,39,0.04)] sm:px-7">
@@ -28,7 +32,7 @@ export function LoginForm() {
         <div className="space-y-3">
           <label
             htmlFor="identifier"
-            className="block text-[.9375rem] font-semibold text-(--color-label-login)"
+            className="block text-sm font-semibold text-(--color-label-login)"
           >
             Email/ User ID
           </label>
@@ -40,7 +44,7 @@ export function LoginForm() {
             {...register("identifier")}
           />
           {errors.identifier ? (
-            <p className="text-[.8125rem] text-(--color-error)">
+            <p className="rounded-lg bg-red-600 px-3 py-2 text-xs text-white">
               {errors.identifier.message}
             </p>
           ) : null}
@@ -49,7 +53,7 @@ export function LoginForm() {
         <div className="space-y-3">
           <label
             htmlFor="password"
-            className="block text-[.9375rem] font-semibold text-(--color-label-login)"
+            className="block text-sm font-semibold text-(--color-label-login)"
           >
             Password
           </label>
@@ -65,7 +69,7 @@ export function LoginForm() {
               type="button"
               aria-label={showPassword ? "Hide password" : "Show password"}
               onClick={() => setShowPassword((value) => !value)}
-              className="absolute top-1/2 right-4 -translate-y-1/2 text-(--color-icon-eye)"
+              className="absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer text-(--color-icon-eye)"
             >
               {showPassword ? (
                 <FiEyeOff className="size-5" />
@@ -75,7 +79,7 @@ export function LoginForm() {
             </button>
           </div>
           {errors.password ? (
-            <p className="text-[.8125rem] text-(--color-error)">
+            <p className="rounded-lg bg-red-600 px-3 py-2 text-xs text-white">
               {errors.password.message}
             </p>
           ) : null}
@@ -84,7 +88,7 @@ export function LoginForm() {
         <div className="flex justify-end">
           <button
             type="button"
-            className="text-[.9375rem] font-semibold text-(--color-text-interactive) transition hover:text-(--color-brand-focus)"
+            className="cursor-pointer text-sm font-semibold text-(--color-text-interactive) transition hover:text-(--color-brand-focus)"
           >
             Forget Password?
           </button>
@@ -93,7 +97,7 @@ export function LoginForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="h-11 w-full rounded-xl bg-[image:var(--gradient-brand)] text-base font-semibold text-white shadow-[var(--shadow-brand-strong)] transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-70"
+          className={`h-11 w-full cursor-pointer rounded-xl text-base font-semibold text-white transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-70 ${submitButtonClassName}`}
         >
           {buttonText}
         </button>

@@ -45,7 +45,7 @@ export function RichTextEditor({
     editorProps: {
       attributes: {
         class:
-          "min-h-23.75 px-4 py-4 text-[.9375rem] text-(--color-text-heading) outline-none ProseMirror",
+          "min-h-23.75 px-4 py-4 text-sm text-(--color-text-heading) outline-none ProseMirror",
       },
     },
     onUpdate: ({ editor: currentEditor }) => {
@@ -69,7 +69,7 @@ export function RichTextEditor({
     return (
       <div className="rounded-lg border border-(--color-border-primary) bg-white">
         <div className="flex h-10 items-center gap-4 border-b border-(--color-border-editor) px-4 text-(--color-text-toolbar)" />
-        <div className="min-h-23.75 px-4 py-4 text-[.9375rem] text-(--color-placeholder)" />
+        <div className="min-h-23.75 px-4 py-4 text-sm text-(--color-placeholder)" />
       </div>
     );
   }
@@ -94,7 +94,7 @@ export function RichTextEditor({
         <button
           type="button"
           onClick={() => editor.chain().focus().setParagraph().run()}
-          className="flex cursor-pointer items-center gap-1 text-[.8125rem] transition hover:text-(--color-text-heading)"
+          className="flex cursor-pointer items-center gap-1 text-xs transition hover:text-(--color-text-heading)"
         >
           Normal text
           <FiChevronDown className="size-3.5" />
@@ -102,7 +102,7 @@ export function RichTextEditor({
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className="flex cursor-pointer items-center gap-1 text-[.8125rem] transition hover:text-(--color-text-heading)"
+          className="flex cursor-pointer items-center gap-1 text-xs transition hover:text-(--color-text-heading)"
         >
           <FiList className="size-3.75" />
           <FiChevronDown className="size-3.5" />

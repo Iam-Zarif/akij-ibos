@@ -4,7 +4,7 @@ export function LoginView() {
   return (
     <main className="flex flex-1 flex-col items-center justify-center px-6 py-16 sm:px-10">
       <div className="w-full max-w-130 text-center">
-        <h2 className="text-lg font-semibold text-(--color-foreground) sm:text-2xl">
+        <h2 className="text-lg font-semibold text-(--color-foreground) sm:text-xl">
           Sign In
         </h2>
       </div>

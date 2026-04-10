@@ -29,8 +29,10 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} h-full antialiased`}
       data-scroll-behavior="smooth"
+      suppressHydrationWarning
     >
       <body
+        suppressHydrationWarning
         style={THEME_VARS}
         className="min-h-full bg-(--color-background) text-(--color-foreground)"
       >

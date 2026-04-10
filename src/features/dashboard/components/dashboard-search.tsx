@@ -65,7 +65,7 @@ export function DashboardSearch({ value, onChange }: DashboardSearchProps) {
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder="Search by exam title"
-        className="h-10 w-full rounded-[.6875rem] border border-(--color-brand-search-border) bg-white px-3.5 pr-12 text-[.8125rem] text-(--color-text-body) shadow-[var(--shadow-search)] outline-none placeholder:text-(--color-placeholder-soft) focus:border-(--color-brand-search-focus)"
+        className="h-10 w-full rounded-[.6875rem] border border-(--color-brand-search-border) bg-white px-3.5 pr-12 text-sm text-(--color-text-body) shadow-(--shadow-search) outline-none placeholder:text-(--color-placeholder-soft) focus:border-(--color-brand-search-focus)"
       />
       <button
         type="button"

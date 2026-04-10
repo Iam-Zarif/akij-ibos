@@ -29,6 +29,11 @@ export default async function OnlineTestQuestionsPage({
     <OnlineTestQuestionsView
       isModalOpen={resolvedSearchParams.modal === "true"}
       questionType={getQuestionType(resolvedSearchParams.type)}
+      testId={
+        Array.isArray(resolvedSearchParams.testId)
+          ? resolvedSearchParams.testId[0]
+          : resolvedSearchParams.testId
+      }
       questionId={
         Array.isArray(resolvedSearchParams.id)
           ? resolvedSearchParams.id[0]

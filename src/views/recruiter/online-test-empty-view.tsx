@@ -11,10 +11,10 @@ export function OnlineTestEmptyView() {
 
   return (
     <main className="flex flex-1 flex-col px-4 py-7 sm:px-6 sm:py-9 lg:px-10">
-      <div className="mx-auto w-full max-w-340 space-y-7 sm:space-y-9">
+      <div className="mx-auto w-full max-w-7xl space-y-7 sm:space-y-9">
         <section className="space-y-6">
           <div className="flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-            <h2 className="text-[1.3125rem] font-semibold text-(--color-text-heading)">
+            <h2 className="text-xl font-semibold text-(--color-text-heading)">
               Online Tests
             </h2>
 
@@ -23,7 +23,7 @@ export function OnlineTestEmptyView() {
 
               <Link
                 href="/online-test/create"
-                className="inline-flex h-10 cursor-pointer items-center justify-center rounded-[.6875rem] bg-[image:var(--gradient-brand)] px-6 text-center text-sm font-semibold text-white shadow-[var(--shadow-brand)] transition hover:opacity-95 lg:min-w-36.5"
+                className="inline-flex h-10 cursor-pointer items-center justify-center rounded-[.6875rem] bg-(image:--gradient-brand) px-6 text-center text-sm font-semibold text-white shadow-(--shadow-brand) transition hover:opacity-95 lg:min-w-36.5"
               >
                 Create Online Test
               </Link>

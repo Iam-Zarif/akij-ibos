@@ -11,10 +11,10 @@ type TestCardProps = {
 
 export function TestCard({ test }: TestCardProps) {
   return (
-    <article className="rounded-[1.125rem] border border-(--color-border-card) bg-white px-6 py-6 shadow-[var(--shadow-subtle)]">
+    <article className="rounded-[1.125rem] border border-(--color-border-card) bg-white px-6 py-6 shadow-(--shadow-subtle)">
       <div className="space-y-7">
         <div className="space-y-4">
-          <h3 className="max-w-105 text-lg leading-[1.42] font-semibold text-(--color-text-primary)">
+          <h3 className="max-w-105 text-base leading-[1.42] font-semibold text-(--color-text-primary) sm:text-lg">
             {test.title}
           </h3>
 
@@ -39,7 +39,7 @@ export function TestCard({ test }: TestCardProps) {
 
         <button
           type="button"
-          className="h-10 cursor-pointer rounded-[.6875rem] border border-(--color-brand-border) px-4.5 text-[.9375rem] font-semibold text-(--color-brand-text) transition hover:bg-(--color-brand-hover)"
+          className="h-10 cursor-pointer rounded-[.6875rem] border border-(--color-brand-border) px-4.5 text-sm font-semibold text-(--color-brand-text) transition hover:bg-(--color-brand-hover)"
         >
           View Candidates
         </button>

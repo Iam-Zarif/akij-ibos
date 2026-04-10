@@ -1,20 +1,18 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { Provider } from "react-redux";
 
+import { fetchCurrentUser } from "@/features/auth/services/auth.service";
 import {
-  readStoredAuthUser,
-  writeStoredAuthUser,
-} from "@/features/auth/utils/auth-storage";
-import {
-  readStoredOnlineTestState,
-  writeStoredOnlineTestState,
-} from "@/features/online-test/utils/online-test-storage";
+  clearAuthToken,
+  readAuthToken,
+} from "@/features/auth/utils/auth-cookie";
 import { store } from "@/store";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { hydrateAuthState } from "@/store/slices/auth-slice";
-import { hydrateOnlineTestState } from "@/store/slices/online-test-slice";
+import { clearOnlineTestState } from "@/store/slices/online-test-slice";
 
 type AppProviderProps = {
   children: ReactNode;
@@ -22,54 +20,44 @@ type AppProviderProps = {
 
 function AuthPersistence() {
   const dispatch = useAppDispatch();
+  const pathname = usePathname();
   const activeUser = useAppSelector((state) => state.auth.activeUser);
+  const isHydrated = useAppSelector((state) => state.auth.isHydrated);
 
   useEffect(() => {
-    dispatch(hydrateAuthState(readStoredAuthUser()));
-  }, [dispatch]);
+    const token = readAuthToken();
 
-  useEffect(() => {
-    const storedUser = readStoredAuthUser();
+    if (!token) {
+      dispatch(hydrateAuthState(null));
 
-    if (!activeUser && storedUser) {
+      if (!pathname.startsWith("/auth/login")) {
+        window.location.replace("/auth/login");
+      }
+
       return;
     }
 
-    writeStoredAuthUser(activeUser);
-  }, [activeUser]);
+    fetchCurrentUser()
+      .then((user) => {
+        dispatch(hydrateAuthState(user));
+      })
+      .catch(() => {
+        clearAuthToken();
+        dispatch(hydrateAuthState(null));
 
-  return null;
-}
-
-function OnlineTestPersistence() {
-  const dispatch = useAppDispatch();
-  const onlineTestState = useAppSelector((state) => state.onlineTest);
+        if (!pathname.startsWith("/auth/login")) {
+          window.location.replace("/auth/login");
+        }
+      });
+  }, [dispatch, pathname]);
 
   useEffect(() => {
-    dispatch(hydrateOnlineTestState(readStoredOnlineTestState()));
-  }, [dispatch]);
-
-  useEffect(() => {
-    const storedState = readStoredOnlineTestState();
-
-    if (
-      !storedState &&
-      !onlineTestState.basicInfoDraft.title &&
-      onlineTestState.savedQuestions.length === 0
-    ) {
+    if (!isHydrated || activeUser) {
       return;
     }
 
-    if (
-      storedState &&
-      !onlineTestState.basicInfoDraft.title &&
-      onlineTestState.savedQuestions.length === 0
-    ) {
-      return;
-    }
-
-    writeStoredOnlineTestState(onlineTestState);
-  }, [onlineTestState]);
+    dispatch(clearOnlineTestState());
+  }, [activeUser, dispatch, isHydrated]);
 
   return null;
 }
@@ -78,7 +66,6 @@ export function AppProvider({ children }: AppProviderProps) {
   return (
     <Provider store={store}>
       <AuthPersistence />
-      <OnlineTestPersistence />
       {children}
     </Provider>
   );

@@ -6,11 +6,13 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 
 import { loginSchema } from "@/features/auth/schemas/login.schema";
+import { loginUser } from "@/features/auth/services/auth.service";
 import type {
   LoginFormValues,
   MockUser,
 } from "@/features/auth/types/auth.types";
-import { findMockUser } from "@/features/auth/utils/find-mock-user";
+import { writeAuthToken } from "@/features/auth/utils/auth-cookie";
+import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { useAppDispatch } from "@/store/hooks";
 import { signInSuccess } from "@/store/slices/auth-slice";
 
@@ -33,30 +35,24 @@ export function useLoginForm() {
 
   const onSubmit = form.handleSubmit(async (values) => {
     setSubmitState("loading");
+    try {
+      const result = await loginUser(values.identifier, values.password);
+      writeAuthToken(result.token);
+      dispatch(signInSuccess(result.user));
+      setSignedInUser(result.user);
+      setSubmitState("success");
+      form.clearErrors("root");
 
-    await new Promise((resolve) => {
-      window.setTimeout(resolve, 450);
-    });
-
-    const matchedUser = findMockUser(values);
-
-    if (!matchedUser) {
+      window.setTimeout(() => {
+        router.push("/dashboard");
+      }, 450);
+    } catch (error) {
       setSignedInUser(null);
       setSubmitState("error");
       form.setError("root", {
-        message: "Invalid credentials. Use one of the configured mock users.",
+        message: getApiErrorMessage(error, "Invalid credentials."),
       });
-      return;
     }
-
-    dispatch(signInSuccess(matchedUser));
-    setSignedInUser(matchedUser);
-    setSubmitState("success");
-    form.clearErrors("root");
-
-    window.setTimeout(() => {
-      router.push("/dashboard");
-    }, 450);
   });
 
   return {

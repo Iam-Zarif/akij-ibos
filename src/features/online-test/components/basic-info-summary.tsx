@@ -6,9 +6,7 @@ import { FiEdit2 } from "react-icons/fi";
 import { useAppSelector } from "@/store/hooks";
 
 export function BasicInfoSummary() {
-  const basicInfoDraft = useAppSelector(
-    (state) => state.onlineTest.basicInfoDraft,
-  );
+  const { basicInfoDraft } = useAppSelector((state) => state.onlineTest);
 
   const summaryItems = [
     {
@@ -39,7 +37,7 @@ export function BasicInfoSummary() {
   ];
 
   return (
-    <section className="mx-auto w-full max-w-239 rounded-[1.125rem] bg-white px-5 py-6 shadow-[var(--shadow-card)] sm:px-7 sm:py-7 lg:px-8">
+    <section className="mx-auto w-full max-w-239 rounded-[1.125rem] bg-white px-5 py-6 shadow-(--shadow-card) sm:px-7 sm:py-7 lg:px-8">
       <div className="space-y-6">
         <div className="flex items-start justify-between gap-4">
           <h3 className="text-lg font-semibold text-(--color-text-heading)">
@@ -48,7 +46,7 @@ export function BasicInfoSummary() {
 
           <Link
             href="/online-test/create"
-            className="inline-flex cursor-pointer items-center gap-2 text-[.9375rem] font-semibold text-(--color-brand-primary) transition hover:opacity-80"
+            className="inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-(--color-brand-primary) transition hover:opacity-80"
           >
             <FiEdit2 className="size-4" />
             Edit

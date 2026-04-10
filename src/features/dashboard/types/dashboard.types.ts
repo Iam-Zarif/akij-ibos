@@ -9,7 +9,7 @@ export type RecruiterOnlineTest = {
 export type DeveloperOnlineTest = {
   id: string;
   title: string;
-  duration?: string;
-  questions?: string;
-  negativeMarking?: string;
+  duration: string;
+  questions: string;
+  negativeMarking: string;
 };

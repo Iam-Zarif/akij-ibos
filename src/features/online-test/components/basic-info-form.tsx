@@ -37,9 +37,15 @@ function TextInput({
       type="text"
       inputMode={inputMode}
       value={value}
-      onChange={(event) => onChange(event.target.value)}
+      onChange={(event) =>
+        onChange(
+          inputMode === "numeric"
+            ? event.target.value.replace(/\D+/g, "")
+            : event.target.value,
+        )
+      }
       placeholder={placeholder}
-      className="h-12 w-full rounded-lg border border-(--color-border-primary) bg-white px-4 text-[.9375rem] text-(--color-text-heading) outline-none placeholder:text-(--color-placeholder)"
+      className="h-12 w-full rounded-lg border border-(--color-border-primary) bg-white px-4 text-sm text-(--color-text-heading) outline-none placeholder:text-(--color-placeholder)"
     />
   );
 }
@@ -93,7 +99,7 @@ function TimePickerField({
       <button
         type="button"
         onClick={() => setIsOpen((current) => !current)}
-        className={`flex h-12 w-full cursor-pointer items-center rounded-lg border border-(--color-border-primary) bg-white px-4 pr-11 text-left text-[.9375rem] outline-none ${
+        className={`flex h-12 w-full cursor-pointer items-center rounded-lg border border-(--color-border-primary) bg-white px-4 pr-11 text-left text-sm outline-none ${
           value ? "text-(--color-text-heading)" : "text-(--color-placeholder)"
         }`}
       >
@@ -104,7 +110,7 @@ function TimePickerField({
       </span>
 
       {isOpen ? (
-        <div className="absolute bottom-14 left-0 z-20 w-full overflow-hidden rounded-[.875rem] border border-(--color-border-primary) bg-white shadow-[var(--shadow-popover)]">
+        <div className="absolute bottom-14 left-0 z-20 w-full overflow-hidden rounded-[.875rem] border border-(--color-border-primary) bg-white shadow-(--shadow-popover)">
           <div className="max-h-55 overflow-y-auto py-2">
             {timeOptions.map((option) => (
               <button
@@ -146,7 +152,7 @@ function SelectField({
       <select
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className={`h-12 w-full cursor-pointer appearance-none rounded-lg border border-(--color-border-primary) bg-white px-4 pr-11 text-[.9375rem] outline-none ${
+        className={`h-12 w-full cursor-pointer appearance-none rounded-lg border border-(--color-border-primary) bg-white px-4 pr-11 text-sm outline-none ${
           value ? "text-(--color-text-heading)" : "text-(--color-placeholder)"
         }`}
       >
@@ -175,7 +181,7 @@ export function BasicInfoForm() {
   };
 
   return (
-    <section className="mx-auto w-full max-w-239 rounded-[1.125rem] bg-white px-5 py-6 shadow-[var(--shadow-card)] sm:px-7 sm:py-7 lg:px-8">
+    <section className="mx-auto w-full max-w-239 rounded-[1.125rem] bg-white px-5 py-6 shadow-(--shadow-card) sm:px-7 sm:py-7 lg:px-8">
       <div className="space-y-6">
         <h3 className="text-lg font-semibold text-(--color-text-heading)">
           Basic Information

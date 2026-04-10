@@ -5,13 +5,15 @@ import { useMemo, useState } from "react";
 import { FiCheckSquare, FiCircle, FiPlus, FiTrash2 } from "react-icons/fi";
 
 import { RichTextEditor } from "@/features/online-test/components/rich-text-editor";
+import { saveOnlineTestQuestion } from "@/features/online-test/services/online-test.service";
 import type {
   ChoiceOption,
   PreviewQuestion,
   QuestionVariant,
 } from "@/features/online-test/types/question.types";
+import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { upsertQuestion } from "@/store/slices/online-test-slice";
+import { setCurrentOnlineTest } from "@/store/slices/online-test-slice";
 
 const questionTypeLabelMap: Record<QuestionVariant, string> = {
   checkbox: "Checkbox",
@@ -24,6 +26,49 @@ const defaultChoiceOptions = [
   { id: "B", isCorrect: false },
   { id: "C", isCorrect: false },
 ];
+
+function getInitialEditorContent(savedQuestion?: PreviewQuestion) {
+  if (!savedQuestion) {
+    return {
+      question: "<p></p>",
+      "option-A": "<p></p>",
+      "option-B": "<p></p>",
+      "option-C": "<p></p>",
+    };
+  }
+
+  const nextContent: Record<string, string> = {
+    question: toEditorHtml(savedQuestion.prompt),
+  };
+
+  if (savedQuestion.type === "manual") {
+    nextContent["option-A"] = toEditorHtml(savedQuestion.answerText ?? "");
+    return nextContent;
+  }
+
+  savedQuestion.choices?.forEach((choice, index) => {
+    const optionLabel =
+      choice.label.replace(".", "") || String.fromCharCode(65 + index);
+    nextContent[`option-${optionLabel}`] = toEditorHtml(choice.text);
+  });
+
+  return nextContent;
+}
+
+function getInitialOptions(savedQuestion?: PreviewQuestion) {
+  if (savedQuestion?.type === "manual") {
+    return [{ id: "A", isCorrect: false }];
+  }
+
+  if (savedQuestion?.choices?.length) {
+    return savedQuestion.choices.map((choice, index) => ({
+      id: choice.label.replace(".", "") || String.fromCharCode(65 + index),
+      isCorrect: Boolean(choice.isCorrect),
+    }));
+  }
+
+  return defaultChoiceOptions;
+}
 
 function stripHtml(value: string) {
   return value
@@ -39,7 +84,7 @@ function toEditorHtml(value: string) {
 
 function ChoiceIndicator({ label }: { label: string }) {
   return (
-    <span className="inline-flex size-5.5 items-center justify-center rounded-full border border-(--color-border-option) text-[.8125rem] font-medium text-(--color-text-subtle)">
+    <span className="inline-flex size-5.5 items-center justify-center rounded-full border border-(--color-border-option) text-xs font-medium text-(--color-text-subtle)">
       {label}
     </span>
   );
@@ -47,9 +92,11 @@ function ChoiceIndicator({ label }: { label: string }) {
 
 export function QuestionModal({
   type,
+  testId,
   questionId,
 }: {
   type: QuestionVariant;
+  testId?: string;
   questionId?: string;
 }) {
   const router = useRouter();
@@ -75,48 +122,13 @@ export function QuestionModal({
     return savedQuestions.length + 1;
   }, [savedQuestion, savedQuestions]);
   const [editorContent, setEditorContent] = useState<Record<string, string>>(
-    () => {
-      if (!savedQuestion) {
-        return {
-          question: "<p></p>",
-          "option-A": "<p></p>",
-          "option-B": "<p></p>",
-          "option-C": "<p></p>",
-        };
-      }
-
-      const nextContent: Record<string, string> = {
-        question: toEditorHtml(savedQuestion.prompt),
-      };
-
-      if (savedQuestion.type === "manual") {
-        nextContent["option-A"] = toEditorHtml(savedQuestion.answerText ?? "");
-        return nextContent;
-      }
-
-      savedQuestion.choices?.forEach((choice, index) => {
-        const optionLabel =
-          choice.label.replace(".", "") || String.fromCharCode(65 + index);
-        nextContent[`option-${optionLabel}`] = toEditorHtml(choice.text);
-      });
-
-      return nextContent;
-    },
+    () => getInitialEditorContent(savedQuestion),
   );
-  const [options, setOptions] = useState(() => {
-    if (savedQuestion?.type === "manual") {
-      return [{ id: "A", isCorrect: false }];
-    }
-
-    if (savedQuestion?.choices?.length) {
-      return savedQuestion.choices.map((choice, index) => ({
-        id: choice.label.replace(".", "") || String.fromCharCode(65 + index),
-        isCorrect: Boolean(choice.isCorrect),
-      }));
-    }
-
-    return defaultChoiceOptions;
-  });
+  const [options, setOptions] = useState(() =>
+    getInitialOptions(savedQuestion),
+  );
+  const [isSaving, setIsSaving] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const isManual = questionType === "manual";
 
@@ -174,39 +186,117 @@ export function QuestionModal({
     });
   };
 
-  const buildSavedChoices = (): ChoiceOption[] =>
-    options.map((option, index) => ({
-      id: `${questionId ?? `question-${questionNumber}`}-${option.id.toLowerCase()}`,
-      label: `${option.id}.`,
-      text:
-        stripHtml(editorContent[`option-${option.id}`] ?? "") ||
-        `Option ${String.fromCharCode(65 + index)}`,
+  const getQuestionPrompt = () => stripHtml(editorContent.question);
+  const getManualAnswer = () => stripHtml(editorContent["option-A"] ?? "");
+  const getChoiceTexts = () =>
+    options.map((option) => ({
+      id: option.id,
+      text: stripHtml(editorContent[`option-${option.id}`] ?? ""),
       isCorrect: option.isCorrect,
     }));
 
-  const handleSave = (shouldAddMore: boolean) => {
+  const buildSavedChoices = (): ChoiceOption[] =>
+    options.map((option) => ({
+      id: `${questionId ?? `question-${questionNumber}`}-${option.id.toLowerCase()}`,
+      label: `${option.id}.`,
+      text: stripHtml(editorContent[`option-${option.id}`] ?? ""),
+      isCorrect: option.isCorrect,
+    }));
+
+  const resetDraft = (nextQuestionType: QuestionVariant) => {
+    setQuestionType(nextQuestionType);
+    setErrorMessage("");
+    setEditorContent(
+      nextQuestionType === "manual"
+        ? {
+            question: "<p></p>",
+            "option-A": "<p></p>",
+          }
+        : {
+            question: "<p></p>",
+            "option-A": "<p></p>",
+            "option-B": "<p></p>",
+            "option-C": "<p></p>",
+          },
+    );
+    setOptions(
+      nextQuestionType === "manual"
+        ? [{ id: "A", isCorrect: false }]
+        : defaultChoiceOptions.map((option) => ({ ...option })),
+    );
+  };
+
+  const handleSave = async (shouldAddMore: boolean) => {
+    if (!testId) {
+      setErrorMessage("Test id is missing.");
+      return;
+    }
+
+    const prompt = getQuestionPrompt();
+
+    if (!prompt) {
+      setErrorMessage("Question title is required.");
+      return;
+    }
+
+    if (questionType === "manual") {
+      const answerText = getManualAnswer();
+
+      if (!answerText) {
+        setErrorMessage("Answer text is required.");
+        return;
+      }
+    } else {
+      const choiceTexts = getChoiceTexts();
+
+      if (choiceTexts.some((choice) => !choice.text)) {
+        setErrorMessage("All options must have text.");
+        return;
+      }
+
+      if (!choiceTexts.some((choice) => choice.isCorrect)) {
+        setErrorMessage("Select at least one correct answer.");
+        return;
+      }
+    }
+
     const nextQuestionId = questionId ?? `question-${Date.now()}`;
     const nextQuestion: PreviewQuestion = {
       id: nextQuestionId,
       type: questionType,
       score: questionType === "manual" ? "5 pt" : "1 pt",
       title: `Question ${questionNumber}`,
-      prompt: stripHtml(editorContent.question) || "Untitled question",
+      prompt,
       ...(questionType === "manual"
         ? {
-            answerText: stripHtml(editorContent["option-A"] ?? ""),
+            answerText: getManualAnswer(),
           }
         : {
             choices: buildSavedChoices(),
           }),
     };
 
-    dispatch(upsertQuestion(nextQuestion));
-    router.push(
-      shouldAddMore
-        ? `/online-test/questions?modal=true&type=${questionType}`
-        : "/online-test/questions/preview",
-    );
+    setIsSaving(true);
+    setErrorMessage("");
+
+    try {
+      const updatedTest = await saveOnlineTestQuestion(testId, nextQuestion);
+      dispatch(setCurrentOnlineTest(updatedTest));
+
+      if (shouldAddMore) {
+        resetDraft(questionType);
+        router.replace(
+          `/online-test/questions?testId=${testId}&modal=true&type=${questionType}`,
+        );
+        return;
+      }
+
+      router.push(`/online-test/questions/preview?testId=${testId}`);
+    } catch (error) {
+      setErrorMessage(getApiErrorMessage(error, "Failed to save question."));
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleQuestionTypeChange = (value: QuestionVariant) => {
@@ -235,10 +325,10 @@ export function QuestionModal({
 
   return (
     <div className="fixed inset-0 z-30 flex items-start justify-center overflow-y-auto bg-(--color-overlay) px-4 py-6 sm:px-6">
-      <div className="w-full max-w-162.5 rounded-[1.125rem] bg-white shadow-[var(--shadow-modal)]">
+      <div className="w-full max-w-162.5 rounded-[1.125rem] bg-white shadow-(--shadow-modal)">
         <div className="flex items-center justify-between gap-4 px-6 pt-5 pb-4">
           <div className="flex items-center gap-2">
-            <span className="flex size-5.5 items-center justify-center rounded-full border border-(--color-border-question) text-[.8125rem] font-medium text-(--color-text-subtle)">
+            <span className="flex size-5.5 items-center justify-center rounded-full border border-(--color-border-question) text-xs font-medium text-(--color-text-subtle)">
               {questionNumber}
             </span>
             <h3 className="text-xl font-semibold text-(--color-text-heading)">
@@ -249,7 +339,7 @@ export function QuestionModal({
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 text-sm font-medium text-(--color-text-control)">
               <span>Score:</span>
-              <span className="inline-flex h-7.5 min-w-11 items-center justify-center rounded-[.5625rem] border border-(--color-border-score) px-3 text-[.8125rem] text-(--color-text-subtle)">
+              <span className="inline-flex h-7.5 min-w-11 items-center justify-center rounded-[.5625rem] border border-(--color-border-score) px-3 text-xs text-(--color-text-subtle)">
                 {isManual ? "5" : "1"}
               </span>
             </div>
@@ -259,7 +349,7 @@ export function QuestionModal({
               onChange={(event) =>
                 handleQuestionTypeChange(event.target.value as QuestionVariant)
               }
-              className="inline-flex h-7.5 cursor-pointer appearance-none rounded-[.5625rem] border border-(--color-border-score) px-3 text-[.8125rem] text-(--color-text-control) outline-none"
+              className="inline-flex h-7.5 cursor-pointer appearance-none rounded-[.5625rem] border border-(--color-border-score) px-3 text-xs text-(--color-text-control) outline-none"
             >
               <option value="manual">{questionTypeLabelMap.manual}</option>
               <option value="checkbox">{questionTypeLabelMap.checkbox}</option>
@@ -268,7 +358,13 @@ export function QuestionModal({
 
             <button
               type="button"
-              onClick={() => router.push("/online-test/questions")}
+              onClick={() =>
+                router.push(
+                  testId
+                    ? `/online-test/questions?testId=${testId}`
+                    : "/online-test/questions",
+                )
+              }
               className="cursor-pointer text-(--color-text-subtle) transition hover:text-(--color-text-heading)"
             >
               <FiTrash2 className="size-4.5" />
@@ -283,6 +379,12 @@ export function QuestionModal({
             onChange={(value) => handleEditorChange("question", value)}
           />
 
+          {errorMessage ? (
+            <div className="rounded-lg bg-red-600 px-3 py-2 text-sm text-white">
+              {errorMessage}
+            </div>
+          ) : null}
+
           {isManual ? (
             <div className="space-y-3">
               <div className="flex items-center justify-between gap-4">
@@ -292,7 +394,13 @@ export function QuestionModal({
 
                 <button
                   type="button"
-                  onClick={() => router.push("/online-test/questions")}
+                  onClick={() =>
+                    router.push(
+                      testId
+                        ? `/online-test/questions?testId=${testId}`
+                        : "/online-test/questions",
+                    )
+                  }
                   className="cursor-pointer text-(--color-text-subtle) transition hover:text-(--color-text-heading)"
                 >
                   <FiTrash2 className="size-4.25" />
@@ -378,16 +486,18 @@ export function QuestionModal({
             <button
               type="button"
               onClick={() => handleSave(false)}
+              disabled={isSaving}
               className="inline-flex h-8.5 cursor-pointer items-center justify-center rounded-lg border border-(--color-border-brand-strong) px-10 text-sm font-semibold text-(--color-brand-text) transition hover:bg-(--color-brand-hover)"
             >
-              Save
+              {isSaving ? "Saving..." : "Save"}
             </button>
             <button
               type="button"
               onClick={() => handleSave(true)}
-              className="inline-flex h-8.5 cursor-pointer items-center justify-center rounded-lg bg-[image:var(--gradient-brand)] px-8 text-sm font-semibold text-white shadow-[0_.625rem_1.5rem_rgba(95,46,234,0.18)] transition hover:opacity-95"
+              disabled={isSaving}
+              className="inline-flex h-8.5 cursor-pointer items-center justify-center rounded-lg bg-(image:--gradient-brand) px-8 text-sm font-semibold text-white shadow-[0_.625rem_1.5rem_rgba(95,46,234,0.18)] transition hover:opacity-95"
             >
-              Save &amp; Add More
+              {isSaving ? "Saving..." : "Save & Add More"}
             </button>
           </div>
         </div>

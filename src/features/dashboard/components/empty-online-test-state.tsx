@@ -12,10 +12,10 @@ export function EmptyOnlineTestState() {
           priority
           className="h-30 w-30"
         />
-        <h3 className="mt-5 text-lg font-semibold text-(--color-foreground) sm:text-xl">
+        <h3 className="mt-5 text-base font-semibold text-(--color-foreground) sm:text-lg">
           No Online Test Available
         </h3>
-        <p className="mt-3 max-w-155 text-[.9375rem] leading-[1.45] text-(--color-text-muted)">
+        <p className="mt-3 max-w-155 text-sm leading-[1.45] text-(--color-text-muted)">
           Currently, there are no online tests available. Please check back
           later for updates.
         </p>

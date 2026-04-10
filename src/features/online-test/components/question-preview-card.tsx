@@ -1,10 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FiCheck } from "react-icons/fi";
 
+import { deleteOnlineTestQuestion } from "@/features/online-test/services/online-test.service";
+import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { useAppDispatch } from "@/store/hooks";
-import { removeQuestion } from "@/store/slices/online-test-slice";
+import { setCurrentOnlineTest } from "@/store/slices/online-test-slice";
 import type {
   ChoiceOption,
   PreviewQuestion,
@@ -38,7 +42,7 @@ function ChoiceRow({ choice }: { choice: ChoiceOption }) {
 
   return (
     <div
-      className={`flex min-h-12 items-center justify-between rounded-[.6875rem] px-4 text-[.9375rem] text-(--color-text-primary) ${
+      className={`flex min-h-12 items-center justify-between rounded-[.6875rem] px-4 text-sm text-(--color-text-primary) ${
         isCorrect ? "bg-(--color-success-surface)" : ""
       }`}
     >
@@ -56,35 +60,60 @@ function ChoiceRow({ choice }: { choice: ChoiceOption }) {
 
 export function QuestionPreviewCard({
   question,
+  testId,
 }: {
   question: PreviewQuestion;
+  testId?: string;
 }) {
+  const router = useRouter();
   const dispatch = useAppDispatch();
+  const [errorMessage, setErrorMessage] = useState("");
   const typeHref =
     question.type === "checkbox"
-      ? `/online-test/questions?modal=true&type=checkbox&id=${question.id}`
+      ? `/online-test/questions?modal=true&type=checkbox&id=${question.id}${testId ? `&testId=${testId}` : ""}`
       : question.type === "radio"
-        ? `/online-test/questions?modal=true&type=radio&id=${question.id}`
-        : `/online-test/questions?modal=true&type=manual&id=${question.id}`;
+        ? `/online-test/questions?modal=true&type=radio&id=${question.id}${testId ? `&testId=${testId}` : ""}`
+        : `/online-test/questions?modal=true&type=manual&id=${question.id}${testId ? `&testId=${testId}` : ""}`;
+
+  const handleRemoveQuestion = async () => {
+    if (!testId) {
+      return;
+    }
+
+    try {
+      const updatedTest = await deleteOnlineTestQuestion(testId, question.id);
+      dispatch(setCurrentOnlineTest(updatedTest));
+      router.refresh();
+      setErrorMessage("");
+    } catch (error) {
+      setErrorMessage(getApiErrorMessage(error, "Failed to remove question."));
+    }
+  };
 
   return (
-    <article className="mx-auto w-full max-w-239 rounded-[1.125rem] bg-white px-5 py-6 shadow-[var(--shadow-card)] sm:px-7 sm:py-7 lg:px-8">
+    <article className="mx-auto w-full max-w-239 rounded-[1.125rem] bg-white px-5 py-6 shadow-(--shadow-card) sm:px-7 sm:py-7 lg:px-8">
       <div className="space-y-6">
-        <div className="flex items-start justify-between gap-4 border-b border-(--color-border-secondary) pb-5">
+        <div className="flex flex-col gap-4 border-b border-(--color-border-secondary) pb-5 sm:flex-row sm:items-start sm:justify-between">
           <h3 className="text-lg font-semibold text-(--color-text-heading)">
             {question.title}
           </h3>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <TypeBadge label={typeLabelMap[question.type]} />
             <ScoreBadge score={question.score} />
           </div>
         </div>
 
         <div className="space-y-5">
-          <h4 className="text-lg font-semibold text-black">
+          <h4 className="text-base font-semibold text-black sm:text-lg">
             {question.prompt}
           </h4>
+
+          {errorMessage ? (
+            <p className="rounded-lg bg-red-600 px-3 py-2 text-sm text-white">
+              {errorMessage}
+            </p>
+          ) : null}
 
           {question.type === "manual" ? (
             <p className="max-w-215 text-sm leading-[1.75] text-(--color-text-primary)">
@@ -99,17 +128,17 @@ export function QuestionPreviewCard({
           )}
         </div>
 
-        <div className="flex items-center justify-between gap-4 border-t border-(--color-border-secondary) pt-5">
+        <div className="flex flex-col gap-3 border-t border-(--color-border-secondary) pt-5 sm:flex-row sm:items-center sm:justify-between">
           <Link
             href={typeHref}
-            className="cursor-pointer text-[.9375rem] font-medium text-(--color-brand-primary) transition hover:opacity-80"
+            className="cursor-pointer text-sm font-medium text-(--color-brand-primary) transition hover:opacity-80"
           >
             Edit
           </Link>
           <button
             type="button"
-            onClick={() => dispatch(removeQuestion(question.id))}
-            className="cursor-pointer text-[.9375rem] font-medium text-(--color-text-error) transition hover:opacity-80"
+            onClick={handleRemoveQuestion}
+            className="cursor-pointer text-sm font-medium text-(--color-text-error) transition hover:opacity-80"
           >
             Remove From Exam
           </button>

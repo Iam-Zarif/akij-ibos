@@ -50,7 +50,7 @@ export function ManageOnlineTestStepper({
           <div className="flex items-center gap-3 text-sm">
             <div className="flex items-center gap-2">
               <span
-                className={`flex size-6 items-center justify-center rounded-full text-[.8125rem] font-semibold ${getStepCircleClassName(
+                className={`flex size-6 items-center justify-center rounded-full text-xs font-semibold ${getStepCircleClassName(
                   basicInfoState,
                 )}`}
               >
@@ -67,7 +67,7 @@ export function ManageOnlineTestStepper({
 
             <div className="flex items-center gap-2">
               <span
-                className={`flex size-6 items-center justify-center rounded-full text-[.8125rem] font-semibold ${getStepCircleClassName(
+                className={`flex size-6 items-center justify-center rounded-full text-xs font-semibold ${getStepCircleClassName(
                   questionsState,
                 )}`}
               >

@@ -11,12 +11,15 @@ export function AppHeader() {
   const activeUser = useAppSelector((state) => state.auth.activeUser);
   const isDashboard = pathname === "/dashboard";
   const isOnlineTest = pathname.startsWith("/online-test");
+  const isAssessment = pathname.startsWith("/assessment");
   const isDeveloperDashboard = isDashboard && activeUser?.role === "developer";
   const headerTitle = isOnlineTest
     ? "Online Test"
     : isDeveloperDashboard
       ? "Akij Resource"
       : "Dashboard";
+  const shouldShowProfile =
+    (isDashboard || isOnlineTest || isAssessment) && activeUser;
 
   return (
     <header className="fixed top-0 right-0 left-0 z-40 border-b border-(--color-border-header) bg-white">
@@ -31,10 +34,10 @@ export function AppHeader() {
             className="h-auto w-full"
           />
         </div>
-        <h1 className="truncate pl-2 text-[1.0625rem] leading-none font-semibold text-(--color-foreground) sm:pl-4 sm:text-lg">
+        <h1 className="truncate pl-2 text-base leading-none font-semibold text-(--color-foreground) sm:pl-4 sm:text-lg">
           {isDashboard || isOnlineTest ? headerTitle : "Akij Resource"}
         </h1>
-        {(isDashboard || isOnlineTest) && activeUser ? (
+        {shouldShowProfile ? (
           <button
             type="button"
             className="ml-auto flex cursor-pointer items-center gap-2 rounded-xl transition hover:bg-(--color-hover-surface) sm:gap-3"

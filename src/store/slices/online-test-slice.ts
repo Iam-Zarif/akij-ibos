@@ -1,9 +1,12 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 import type { BasicInfoDraft } from "@/features/online-test/types/basic-info.types";
+import type { OnlineTestRecord } from "@/features/online-test/types/online-test.types";
 import type { PreviewQuestion } from "@/features/online-test/types/question.types";
 
 type OnlineTestState = {
+  tests: OnlineTestRecord[];
+  currentTestId: string | null;
   basicInfoDraft: BasicInfoDraft;
   savedQuestions: PreviewQuestion[];
 };
@@ -20,6 +23,8 @@ const initialBasicInfoDraft: BasicInfoDraft = {
 };
 
 const initialState: OnlineTestState = {
+  tests: [],
+  currentTestId: null,
   basicInfoDraft: {
     ...initialBasicInfoDraft,
   },
@@ -30,21 +35,45 @@ const onlineTestSlice = createSlice({
   name: "onlineTest",
   initialState,
   reducers: {
-    hydrateOnlineTestState(
-      _state,
-      action: PayloadAction<OnlineTestState | null>,
+    clearOnlineTestState() {
+      return initialState;
+    },
+    setOnlineTests(state, action: PayloadAction<OnlineTestRecord[]>) {
+      state.tests = action.payload;
+    },
+    setCurrentOnlineTest(
+      state,
+      action: PayloadAction<OnlineTestRecord | null>,
     ) {
       if (!action.payload) {
-        return initialState;
+        state.currentTestId = null;
+        state.basicInfoDraft = { ...initialBasicInfoDraft };
+        state.savedQuestions = [];
+        return;
       }
 
-      return {
-        basicInfoDraft: {
-          ...initialBasicInfoDraft,
-          ...action.payload.basicInfoDraft,
-        },
-        savedQuestions: action.payload.savedQuestions ?? [],
+      state.currentTestId = action.payload.id;
+      state.basicInfoDraft = {
+        title: action.payload.title,
+        totalCandidates: action.payload.totalCandidates,
+        totalSlots: action.payload.totalSlots,
+        totalQuestionSet: action.payload.totalQuestionSet,
+        questionType: action.payload.questionType,
+        startTime: action.payload.startTime,
+        endTime: action.payload.endTime,
+        duration: action.payload.duration,
       };
+      state.savedQuestions = action.payload.savedQuestions ?? [];
+
+      const existingTestIndex = state.tests.findIndex(
+        (test) => test.id === action.payload?.id,
+      );
+
+      if (existingTestIndex >= 0) {
+        state.tests[existingTestIndex] = action.payload;
+      } else {
+        state.tests.unshift(action.payload);
+      }
     },
     updateBasicInfoDraft(
       state,
@@ -76,7 +105,9 @@ const onlineTestSlice = createSlice({
 });
 
 export const {
-  hydrateOnlineTestState,
+  clearOnlineTestState,
+  setCurrentOnlineTest,
+  setOnlineTests,
   updateBasicInfoDraft,
   upsertQuestion,
   removeQuestion,
