@@ -26,7 +26,9 @@ export function getButtonClassName({
     "inline-flex cursor-pointer items-center justify-center rounded-xl font-semibold transition disabled:cursor-not-allowed disabled:opacity-50";
 
   const sizeClassName =
-    size === "lg" ? " px-8 text-lg shadow-(--shadow-brand)" : "px-8 text-sm";
+    size === "lg"
+      ? "py-2 px-8 text-lg shadow-(--shadow-brand)"
+      : "px-8 text-sm py-2";
 
   const variantClassName =
     variant === "primary"
