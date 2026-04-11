@@ -40,6 +40,11 @@ const onlineTestSlice = createSlice({
     clearOnlineTestState() {
       return initialState;
     },
+    resetOnlineTestDraft(state) {
+      state.currentTestId = null;
+      state.basicInfoDraft = { ...initialBasicInfoDraft };
+      state.savedQuestions = [];
+    },
     setOnlineTests(state, action: PayloadAction<OnlineTestRecord[]>) {
       state.tests = action.payload;
       state.hasLoadedTests = true;
@@ -109,6 +114,7 @@ const onlineTestSlice = createSlice({
 
 export const {
   clearOnlineTestState,
+  resetOnlineTestDraft,
   setCurrentOnlineTest,
   setOnlineTests,
   updateBasicInfoDraft,

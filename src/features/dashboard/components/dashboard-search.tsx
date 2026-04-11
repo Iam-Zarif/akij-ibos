@@ -2,7 +2,7 @@
 
 type DashboardSearchProps = {
   value: string;
-  onChange: (value: string) => void;
+  onValueChangeAction: (value: string) => void;
 };
 
 function SearchSparkIcon() {
@@ -57,13 +57,16 @@ function SearchSparkIcon() {
   );
 }
 
-export function DashboardSearch({ value, onChange }: DashboardSearchProps) {
+export function DashboardSearch({
+  value,
+  onValueChangeAction,
+}: DashboardSearchProps) {
   return (
     <div className="relative w-full lg:w-119.75">
       <input
         type="text"
         value={value}
-        onChange={(event) => onChange(event.target.value)}
+        onChange={(event) => onValueChangeAction(event.target.value)}
         placeholder="Search by exam title"
         className="h-10 w-full rounded-[.6875rem] border border-(--color-brand-search-border) bg-white px-3.5 pr-12 text-sm text-(--color-text-body) shadow-(--shadow-search) outline-none placeholder:text-(--color-placeholder-soft) focus:border-(--color-brand-search-focus)"
       />

@@ -324,181 +324,191 @@ export function QuestionModal({
   };
 
   return (
-    <div className="fixed inset-0 z-30 flex items-start justify-center overflow-y-auto bg-(--color-overlay) px-4 py-6 sm:px-6">
-      <div className="w-full max-w-162.5 rounded-[1.125rem] bg-white shadow-(--shadow-modal)">
-        <div className="flex items-center justify-between gap-4 px-6 pt-5 pb-4">
-          <div className="flex items-center gap-2">
-            <span className="flex size-5.5 items-center justify-center rounded-full border border-(--color-border-question) text-xs font-medium text-(--color-text-subtle)">
-              {questionNumber}
-            </span>
-            <h3 className="text-xl font-semibold text-(--color-text-heading)">
-              Question {questionNumber}
-            </h3>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2 text-sm font-medium text-(--color-text-control)">
-              <span>Score:</span>
-              <span className="inline-flex h-7.5 min-w-11 items-center justify-center rounded-[.5625rem] border border-(--color-border-score) px-3 text-xs text-(--color-text-subtle)">
-                {isManual ? "5" : "1"}
+    <div className="fixed inset-0 z-9999 overflow-y-auto bg-(--color-overlay)">
+      <div className="flex min-h-full items-start justify-center px-4 pt-12 pb-6 sm:px-6">
+        <div className="max-h-[90vh] w-full max-w-162.5 overflow-y-auto rounded-[1.125rem] bg-white shadow-(--shadow-modal)">
+          <div className="flex items-center justify-between gap-4 px-7 pt-5 pb-4">
+            <div className="flex items-center gap-2">
+              <span className="flex size-5.5 items-center justify-center rounded-full border border-(--color-border-question) text-xs font-medium text-(--color-text-subtle)">
+                {questionNumber}
               </span>
+              <h3 className="text-xl font-semibold text-(--color-text-heading)">
+                Question {questionNumber}
+              </h3>
             </div>
 
-            <select
-              value={questionType}
-              onChange={(event) =>
-                handleQuestionTypeChange(event.target.value as QuestionVariant)
-              }
-              className="inline-flex h-7.5 cursor-pointer appearance-none rounded-[.5625rem] border border-(--color-border-score) px-3 text-xs text-(--color-text-control) outline-none"
-            >
-              <option value="manual">{questionTypeLabelMap.manual}</option>
-              <option value="checkbox">{questionTypeLabelMap.checkbox}</option>
-              <option value="radio">{questionTypeLabelMap.radio}</option>
-            </select>
-
-            <button
-              type="button"
-              onClick={() =>
-                router.push(
-                  testId
-                    ? `/online-test/questions?testId=${testId}`
-                    : "/online-test/questions",
-                )
-              }
-              className="cursor-pointer text-(--color-text-subtle) transition hover:text-(--color-text-heading)"
-            >
-              <FiTrash2 className="size-4.5" />
-            </button>
-          </div>
-        </div>
-
-        <div className="space-y-4 px-6 pb-5">
-          <RichTextEditor
-            value={editorContent.question}
-            placeholder="Type question here..."
-            onChange={(value) => handleEditorChange("question", value)}
-          />
-
-          {errorMessage ? (
-            <div className="rounded-lg bg-red-600 px-3 py-2 text-sm text-white">
-              {errorMessage}
-            </div>
-          ) : null}
-
-          {isManual ? (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2 text-sm text-(--color-text-subtle)">
-                  <ChoiceIndicator label="A" />
-                </div>
-
-                <button
-                  type="button"
-                  onClick={() =>
-                    router.push(
-                      testId
-                        ? `/online-test/questions?testId=${testId}`
-                        : "/online-test/questions",
-                    )
-                  }
-                  className="cursor-pointer text-(--color-text-subtle) transition hover:text-(--color-text-heading)"
-                >
-                  <FiTrash2 className="size-4.25" />
-                </button>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 text-sm font-medium text-(--color-text-control)">
+                <span>Score:</span>
+                <span className="inline-flex h-7.5 min-w-11 items-center justify-center rounded-[.5625rem] border border-(--color-border-score) px-3 text-xs text-(--color-text-subtle)">
+                  {isManual ? "5" : "1"}
+                </span>
               </div>
 
-              <RichTextEditor
-                value={editorContent["option-A"] ?? ""}
-                placeholder="Type answer here..."
-                onChange={(value) => handleEditorChange("option-A", value)}
-              />
-            </div>
-          ) : (
-            <>
-              {options.map((choice) => (
-                <div key={choice.id} className="space-y-3">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-2 text-sm text-(--color-text-subtle)">
-                      <ChoiceIndicator label={choice.id} />
-                      <button
-                        type="button"
-                        onClick={() => handleToggleCorrect(choice.id)}
-                        className="inline-flex cursor-pointer items-center text-(--color-icon-choice)"
-                      >
-                        {questionType === "checkbox" ? (
-                          <FiCheckSquare
-                            className={`size-4.5 ${
-                              choice.isCorrect
-                                ? "text-(--color-brand-strong)"
-                                : ""
-                            }`}
-                          />
-                        ) : (
-                          <FiCircle
-                            className={`size-4.5 ${
-                              choice.isCorrect
-                                ? "text-(--color-brand-strong)"
-                                : ""
-                            }`}
-                          />
-                        )}
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleToggleCorrect(choice.id)}
-                        className="cursor-pointer"
-                      >
-                        Set as correct answer
-                      </button>
-                    </div>
-
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveOption(choice.id)}
-                      className="cursor-pointer text-(--color-text-subtle) transition hover:text-(--color-text-heading)"
-                    >
-                      <FiTrash2 className="size-4.25" />
-                    </button>
-                  </div>
-
-                  <RichTextEditor
-                    value={editorContent[`option-${choice.id}`] ?? ""}
-                    placeholder="Type option here..."
-                    onChange={(value) =>
-                      handleEditorChange(`option-${choice.id}`, value)
-                    }
-                  />
-                </div>
-              ))}
+              <select
+                value={questionType}
+                onChange={(event) =>
+                  handleQuestionTypeChange(
+                    event.target.value as QuestionVariant,
+                  )
+                }
+                className="inline-flex h-7.5 cursor-pointer appearance-none rounded-[.5625rem] border border-(--color-border-score) px-3 text-xs text-(--color-text-control) outline-none"
+              >
+                <option value="manual">{questionTypeLabelMap.manual}</option>
+                <option value="checkbox">
+                  {questionTypeLabelMap.checkbox}
+                </option>
+                <option value="radio">{questionTypeLabelMap.radio}</option>
+              </select>
 
               <button
                 type="button"
-                onClick={handleAddOption}
-                className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-(--color-brand-primary) transition hover:opacity-80"
+                onClick={() =>
+                  router.push(
+                    testId
+                      ? `/online-test/questions?testId=${testId}`
+                      : "/online-test/questions",
+                  )
+                }
+                className="cursor-pointer text-(--color-text-subtle) transition hover:text-(--color-text-heading)"
               >
-                <FiPlus className="size-4" />
-                Another options
+                <FiTrash2 className="size-4.5" />
               </button>
-            </>
-          )}
+            </div>
+          </div>
 
-          <div className="flex items-center justify-end gap-3 border-t border-(--color-border-secondary) pt-4">
-            <button
-              type="button"
-              onClick={() => handleSave(false)}
-              disabled={isSaving}
-              className="inline-flex h-8.5 cursor-pointer items-center justify-center rounded-lg border border-(--color-border-brand-strong) px-10 text-sm font-semibold text-(--color-brand-text) transition hover:bg-(--color-brand-hover)"
-            >
-              {isSaving ? "Saving..." : "Save"}
-            </button>
-            <button
-              type="button"
-              onClick={() => handleSave(true)}
-              disabled={isSaving}
-              className="inline-flex h-8.5 cursor-pointer items-center justify-center rounded-lg bg-(image:--gradient-brand) px-8 text-sm font-semibold text-white shadow-[0_.625rem_1.5rem_rgba(95,46,234,0.18)] transition hover:opacity-95"
-            >
-              {isSaving ? "Saving..." : "Save & Add More"}
-            </button>
+          <div className="space-y-4 px-6 pb-5">
+            <RichTextEditor
+              value={editorContent.question}
+              placeholder="Type question here..."
+              onValueChangeAction={(value) =>
+                handleEditorChange("question", value)
+              }
+            />
+
+            {errorMessage ? (
+              <div className="rounded-lg bg-red-600 px-3 py-2 text-sm text-white">
+                {errorMessage}
+              </div>
+            ) : null}
+
+            {isManual ? (
+              <div className="space-y-3 px-4">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-2 text-sm text-(--color-text-subtle)">
+                    <ChoiceIndicator label="A" />
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      router.push(
+                        testId
+                          ? `/online-test/questions?testId=${testId}`
+                          : "/online-test/questions",
+                      )
+                    }
+                    className="cursor-pointer text-(--color-text-subtle) transition hover:text-(--color-text-heading)"
+                  >
+                    <FiTrash2 className="size-4.25" />
+                  </button>
+                </div>
+
+                <RichTextEditor
+                  value={editorContent["option-A"] ?? ""}
+                  placeholder="Type answer here..."
+                  onValueChangeAction={(value) =>
+                    handleEditorChange("option-A", value)
+                  }
+                />
+              </div>
+            ) : (
+              <div className="space-y-4 px-4">
+                {options.map((choice) => (
+                  <div key={choice.id} className="space-y-3">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-2 text-sm text-(--color-text-subtle)">
+                        <ChoiceIndicator label={choice.id} />
+                        <button
+                          type="button"
+                          onClick={() => handleToggleCorrect(choice.id)}
+                          className="inline-flex cursor-pointer items-center text-(--color-icon-choice)"
+                        >
+                          {questionType === "checkbox" ? (
+                            <FiCheckSquare
+                              className={`size-4.5 ${
+                                choice.isCorrect
+                                  ? "text-(--color-brand-strong)"
+                                  : ""
+                              }`}
+                            />
+                          ) : (
+                            <FiCircle
+                              className={`size-4.5 ${
+                                choice.isCorrect
+                                  ? "text-(--color-brand-strong)"
+                                  : ""
+                              }`}
+                            />
+                          )}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleToggleCorrect(choice.id)}
+                          className="cursor-pointer"
+                        >
+                          Set as correct answer
+                        </button>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => handleRemoveOption(choice.id)}
+                        className="cursor-pointer text-(--color-text-subtle) transition hover:text-(--color-text-heading)"
+                      >
+                        <FiTrash2 className="size-4.25" />
+                      </button>
+                    </div>
+
+                    <RichTextEditor
+                      value={editorContent[`option-${choice.id}`] ?? ""}
+                      placeholder="Type option here..."
+                      onValueChangeAction={(value) =>
+                        handleEditorChange(`option-${choice.id}`, value)
+                      }
+                    />
+                  </div>
+                ))}
+
+                <button
+                  type="button"
+                  onClick={handleAddOption}
+                  className="inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-(--color-brand-primary) transition hover:opacity-80"
+                >
+                  <FiPlus className="size-4" />
+                  Another options
+                </button>
+              </div>
+            )}
+
+            <div className="flex items-center justify-end gap-3 border-t border-(--color-border-secondary) pt-4">
+              <button
+                type="button"
+                onClick={() => handleSave(false)}
+                disabled={isSaving}
+                className="inline-flex h-8.5 cursor-pointer items-center justify-center rounded-lg border border-(--color-border-brand-strong) px-10 text-sm font-semibold text-(--color-brand-text) transition hover:bg-(--color-brand-hover)"
+              >
+                {isSaving ? "Saving..." : "Save"}
+              </button>
+              <button
+                type="button"
+                onClick={() => handleSave(true)}
+                disabled={isSaving}
+                className="inline-flex h-8.5 cursor-pointer items-center justify-center rounded-lg bg-(image:--gradient-brand) px-8 text-sm font-semibold text-white shadow-[0_.625rem_1.5rem_rgba(95,46,234,0.18)] transition hover:opacity-95"
+              >
+                {isSaving ? "Saving..." : "Save & Add More"}
+              </button>
+            </div>
           </div>
         </div>
       </div>

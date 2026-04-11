@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { BasicInfoForm } from "@/features/online-test/components/basic-info-form";
 import { ManageOnlineTestStepper } from "@/features/online-test/components/manage-online-test-stepper";
@@ -11,9 +11,18 @@ import {
 } from "@/features/online-test/services/online-test.service";
 import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { setCurrentOnlineTest } from "@/store/slices/online-test-slice";
+import {
+  resetOnlineTestDraft,
+  setCurrentOnlineTest,
+} from "@/store/slices/online-test-slice";
 
-export function OnlineTestBasicInfoView() {
+type OnlineTestBasicInfoViewProps = {
+  testId?: string;
+};
+
+export function OnlineTestBasicInfoView({
+  testId,
+}: OnlineTestBasicInfoViewProps) {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { basicInfoDraft, currentTestId } = useAppSelector(
@@ -21,6 +30,14 @@ export function OnlineTestBasicInfoView() {
   );
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (testId) {
+      return;
+    }
+
+    dispatch(resetOnlineTestDraft());
+  }, [dispatch, testId]);
 
   const handleSave = async () => {
     setIsSaving(true);

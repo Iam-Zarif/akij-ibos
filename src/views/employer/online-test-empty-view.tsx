@@ -19,7 +19,7 @@ export function OnlineTestEmptyView() {
             </h2>
 
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-end">
-              <DashboardSearch value={query} onChange={setQuery} />
+              <DashboardSearch value={query} onValueChangeAction={setQuery} />
 
               <Link
                 href="/online-test/create"

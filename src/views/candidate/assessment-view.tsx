@@ -174,7 +174,7 @@ function AssessmentSession({
       return (
         <RichTextEditor
           value={manualAnswer}
-          onChange={setManualAnswer}
+          onValueChangeAction={setManualAnswer}
           placeholder="Type questions here.."
         />
       );

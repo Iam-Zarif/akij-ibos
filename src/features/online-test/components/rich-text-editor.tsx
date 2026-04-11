@@ -3,7 +3,6 @@
 import { useEffect } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import Underline from "@tiptap/extension-underline";
 import Placeholder from "@tiptap/extension-placeholder";
 import {
   FiBold,
@@ -17,13 +16,13 @@ import {
 
 type RichTextEditorProps = {
   value: string;
-  onChange: (value: string) => void;
+  onValueChangeAction: (value: string) => void;
   placeholder: string;
 };
 
 export function RichTextEditor({
   value,
-  onChange,
+  onValueChangeAction,
   placeholder,
 }: RichTextEditorProps) {
   const editor = useEditor({
@@ -35,7 +34,6 @@ export function RichTextEditor({
           },
         },
       }),
-      Underline,
       Placeholder.configure({
         placeholder,
       }),
@@ -49,7 +47,7 @@ export function RichTextEditor({
       },
     },
     onUpdate: ({ editor: currentEditor }) => {
-      onChange(currentEditor.getHTML());
+      onValueChangeAction(currentEditor.getHTML());
     },
   });
 
