@@ -1,3 +1,21 @@
+## Demo Credentials
+
+### Candidate Accounts
+
+| Name           | Email                                                 | ID      | Password  | Ref. ID  |
+| -------------- | ----------------------------------------------------- | ------- | --------- | -------- |
+| John Smith Doe | [developer@akij.com](mailto:developer@akij.com)       | dev-101 | Dev@12345 | 12341341 |
+| Tasnim Arha    | [frontend.dev@akij.com](mailto:frontend.dev@akij.com) | dev-102 | Dev@54321 | 12341342 |
+
+### Employer Accounts
+
+| Name         | Email                                           | ID      | Password  | Ref. ID  |
+| ------------ | ----------------------------------------------- | ------- | --------- | -------- |
+| Arif Hossain | [recruiter@akij.com](mailto:recruiter@akij.com) | rec-201 | Rec@12345 | 16101121 |
+| Afsana Juthi | [talent@akij.com](mailto:talent@akij.com)       | rec-202 | Rec@54321 | 16101122 |
+
+
+
 ## Tech Stack
 
 - `Next.js 16`
