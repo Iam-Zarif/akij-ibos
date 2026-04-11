@@ -1,38 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Tech Stack
 
-## Getting Started
+- `Next.js 16`
+- `React 19`
+- `TypeScript`
+- `Redux Toolkit`
+- `React Hook Form`
+- `Yup`
+- `Tailwind CSS v4`
+- `Axios`
 
-First, run the development server:
+## Links
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Live Demo: [https://akij-ibos.vercel.app/dashboard](https://akij-ibos.vercel.app/dashboard)
+- Backend API Health: [https://akij-ibos-backend.vercel.app/api/health](https://akij-ibos-backend.vercel.app/api/health)
+- Video Walkthrough: [https://www.youtube.com/watch?v=VHrNKdRJ_qw](https://www.youtube.com/watch?v=VHrNKdRJ_qw)
+- Backend Repository: [https://github.com/Iam-Zarif/akij-ibos-backend](https://github.com/Iam-Zarif/akij-ibos-backend)
+
+## APIs Used
+
+### Authentication
+
+- `POST /api/auth/login`
+- `GET /api/auth/me`
+
+### Online Tests
+
+- `GET /api/online-tests`
+- `POST /api/online-tests`
+- `GET /api/online-tests/:testId`
+- `PUT /api/online-tests/:testId/basic-info`
+- `POST /api/online-tests/:testId/questions`
+- `DELETE /api/online-tests/:testId/questions/:questionId`
+- `POST /api/online-tests/:testId/publish`
+
+### Utility
+
+- `GET /api/health`
+
+## Serial Work Plan
+
+```mermaid
+flowchart TD
+    A["Project Start"] --> B["1. Static login and Employer pages"]
+    B --> C["2. API integration into Employer flow"]
+    C --> D["3. Static Candidate pages with temporary data"]
+    D --> E["4. Final API integration and full test flow"]
+    E --> F["Project End"]
+
+    B -.-> B1["Time handling finalized in phase 2"]
+    B -.-> B2["Temporary local storage during early phase"]
+    D -.-> D1["No local storage in final version"]
+    E -.-> E1["Performance check: LCP, CLS, INP"]
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## QA From task
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### MCP Integration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- I have not used MCP directly in production yet.
+- My understanding is that MCP is an open standard for connecting AI applications with tools, services, and external resources.
+- In this kind of project, MCP could be useful for Figma-to-code workflows, browser debugging, or tool-assisted backend operations also in AI agents, chat apps, coding tools, and systems that need access to APIs, files, databases, or external services.
 
-## Learn More
+### AI Tools for Development
 
-To learn more about Next.js, take a look at the following resources:
+- I use `ChatGPT` for planning, debugging, and documentation.
+- I also recommend `Claude` for deeper reasoning and structured problem solving.
+- These tools help speed up development, but I always verify the final code, logic, and implementation decisions myself.
+- If time is too short, I prefer Claude AI
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Offline Mode
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-# akij-ibos
+- I would use `IndexedDB`, preferably with `Dexie.js`, to save answers locally.
+- I would cache the app shell and static assets with a service worker or `Workbox`.
+- I would preserve timer state and exam progress locally to reduce data loss risk.
+- Once the connection returns, the app would sync unsaved progress back to the server.
