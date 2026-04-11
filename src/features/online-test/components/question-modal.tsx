@@ -11,6 +11,7 @@ import type {
   PreviewQuestion,
   QuestionVariant,
 } from "@/features/online-test/types/question.types";
+import { getButtonClassName } from "@/components/ui/app-button";
 import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setCurrentOnlineTest } from "@/store/slices/online-test-slice";
@@ -31,7 +32,6 @@ function getInitialEditorContent(savedQuestion?: PreviewQuestion) {
   if (!savedQuestion) {
     return {
       question: "<p></p>",
-      "option-A": "<p></p>",
       "option-B": "<p></p>",
       "option-C": "<p></p>",
     };
@@ -40,11 +40,6 @@ function getInitialEditorContent(savedQuestion?: PreviewQuestion) {
   const nextContent: Record<string, string> = {
     question: toEditorHtml(savedQuestion.prompt),
   };
-
-  if (savedQuestion.type === "manual") {
-    nextContent["option-A"] = toEditorHtml(savedQuestion.answerText ?? "");
-    return nextContent;
-  }
 
   savedQuestion.choices?.forEach((choice, index) => {
     const optionLabel =
@@ -57,7 +52,7 @@ function getInitialEditorContent(savedQuestion?: PreviewQuestion) {
 
 function getInitialOptions(savedQuestion?: PreviewQuestion) {
   if (savedQuestion?.type === "manual") {
-    return [{ id: "A", isCorrect: false }];
+    return [];
   }
 
   if (savedQuestion?.choices?.length) {
@@ -187,7 +182,6 @@ export function QuestionModal({
   };
 
   const getQuestionPrompt = () => stripHtml(editorContent.question);
-  const getManualAnswer = () => stripHtml(editorContent["option-A"] ?? "");
   const getChoiceTexts = () =>
     options.map((option) => ({
       id: option.id,
@@ -210,7 +204,6 @@ export function QuestionModal({
       nextQuestionType === "manual"
         ? {
             question: "<p></p>",
-            "option-A": "<p></p>",
           }
         : {
             question: "<p></p>",
@@ -221,7 +214,7 @@ export function QuestionModal({
     );
     setOptions(
       nextQuestionType === "manual"
-        ? [{ id: "A", isCorrect: false }]
+        ? []
         : defaultChoiceOptions.map((option) => ({ ...option })),
     );
   };
@@ -239,14 +232,7 @@ export function QuestionModal({
       return;
     }
 
-    if (questionType === "manual") {
-      const answerText = getManualAnswer();
-
-      if (!answerText) {
-        setErrorMessage("Answer text is required.");
-        return;
-      }
-    } else {
+    if (questionType !== "manual") {
       const choiceTexts = getChoiceTexts();
 
       if (choiceTexts.some((choice) => !choice.text)) {
@@ -268,9 +254,7 @@ export function QuestionModal({
       title: `Question ${questionNumber}`,
       prompt,
       ...(questionType === "manual"
-        ? {
-            answerText: getManualAnswer(),
-          }
+        ? {}
         : {
             choices: buildSavedChoices(),
           }),
@@ -392,37 +376,7 @@ export function QuestionModal({
               </div>
             ) : null}
 
-            {isManual ? (
-              <div className="space-y-3 px-4">
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-2 text-sm text-(--color-text-subtle)">
-                    <ChoiceIndicator label="A" />
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() =>
-                      router.push(
-                        testId
-                          ? `/online-test/questions?testId=${testId}`
-                          : "/online-test/questions",
-                      )
-                    }
-                    className="cursor-pointer text-(--color-text-subtle) transition hover:text-(--color-text-heading)"
-                  >
-                    <FiTrash2 className="size-4.25" />
-                  </button>
-                </div>
-
-                <RichTextEditor
-                  value={editorContent["option-A"] ?? ""}
-                  placeholder="Type answer here..."
-                  onValueChangeAction={(value) =>
-                    handleEditorChange("option-A", value)
-                  }
-                />
-              </div>
-            ) : (
+            {isManual ? null : (
               <div className="space-y-4 px-4">
                 {options.map((choice) => (
                   <div key={choice.id} className="space-y-3">
@@ -496,7 +450,10 @@ export function QuestionModal({
                 type="button"
                 onClick={() => handleSave(false)}
                 disabled={isSaving}
-                className="inline-flex h-8.5 cursor-pointer items-center justify-center rounded-lg border border-(--color-border-brand-strong) px-10 text-sm font-semibold text-(--color-brand-text) transition hover:bg-(--color-brand-hover)"
+                className={getButtonClassName({
+                  variant: "outline",
+                  className: "h-8.5 rounded-lg px-10 text-(--color-brand-text)",
+                })}
               >
                 {isSaving ? "Saving..." : "Save"}
               </button>
@@ -504,7 +461,10 @@ export function QuestionModal({
                 type="button"
                 onClick={() => handleSave(true)}
                 disabled={isSaving}
-                className="inline-flex h-8.5 cursor-pointer items-center justify-center rounded-lg bg-(image:--gradient-brand) px-8 text-sm font-semibold text-white shadow-[0_.625rem_1.5rem_rgba(95,46,234,0.18)] transition hover:opacity-95"
+                className={getButtonClassName({
+                  className:
+                    "h-8.5 rounded-lg px-8 shadow-[0_.625rem_1.5rem_rgba(95,46,234,0.18)]",
+                })}
               >
                 {isSaving ? "Saving..." : "Save & Add More"}
               </button>

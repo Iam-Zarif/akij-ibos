@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FiClock, FiXCircle } from "react-icons/fi";
+import { getButtonClassName } from "@/components/ui/app-button";
 
 type AssessmentTimeoutModalProps = {
   userName: string;
@@ -28,7 +29,10 @@ export function AssessmentTimeoutModal({
         </p>
         <Link
           href="/dashboard"
-          className="mt-8 inline-flex cursor-pointer items-center justify-center rounded-xl border border-(--color-border-primary) bg-white px-7 py-3 text-base font-semibold text-(--color-text-secondary)"
+          className={getButtonClassName({
+            variant: "outline",
+            className: "mt-8 px-7 text-base",
+          })}
         >
           Back to Dashboard
         </Link>

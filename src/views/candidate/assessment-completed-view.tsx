@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { FiCheckCircle } from "react-icons/fi";
 
+import { getButtonClassName } from "@/components/ui/app-button";
 import { useOnlineTestDetail } from "@/features/online-test/hooks/use-online-test-detail";
 import { useAppSelector } from "@/store/hooks";
 
@@ -46,7 +47,10 @@ export function AssessmentCompletedView({
               </p>
               <Link
                 href="/dashboard"
-                className="mt-8 inline-flex cursor-pointer items-center justify-center rounded-xl border border-(--color-border-primary) bg-white px-7 py-3 text-base font-semibold text-(--color-text-secondary)"
+                className={getButtonClassName({
+                  variant: "outline",
+                  className: "mt-8 px-7 text-base",
+                })}
               >
                 Back to Dashboard
               </Link>

@@ -7,6 +7,7 @@ import { useOnlineTestDetail } from "@/features/online-test/hooks/use-online-tes
 import { QuestionPreviewCard } from "@/features/online-test/components/question-preview-card";
 import { ManageOnlineTestStepper } from "@/features/online-test/components/manage-online-test-stepper";
 import { publishOnlineTest } from "@/features/online-test/services/online-test.service";
+import { getButtonClassName } from "@/components/ui/app-button";
 import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { useAppSelector } from "@/store/hooks";
 
@@ -84,7 +85,7 @@ export function OnlineTestQuestionsPreviewView({
               type="button"
               onClick={handlePublish}
               disabled={isPublishing || savedQuestions.length === 0}
-              className="inline-flex h-13.5 cursor-pointer items-center justify-center rounded-[.875rem] bg-(image:--gradient-brand) px-8 text-lg font-semibold text-white shadow-(--shadow-brand) transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
+              className={getButtonClassName()}
             >
               {isPublishing ? "Posting..." : "Post Online Test"}
             </button>

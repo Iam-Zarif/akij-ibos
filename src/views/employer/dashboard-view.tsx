@@ -10,6 +10,7 @@ import { useDashboardSearch } from "@/features/dashboard/hooks/use-dashboard-sea
 import { TestCard } from "@/features/dashboard/components/test-card";
 import type { EmployerOnlineTest } from "@/features/dashboard/types/dashboard.types";
 import { useOnlineTests } from "@/features/online-test/hooks/use-online-tests";
+import { getButtonClassName } from "@/components/ui/app-button";
 
 export function EmployerDashboardView() {
   const { tests, isLoading, errorMessage } = useOnlineTests();
@@ -39,7 +40,9 @@ export function EmployerDashboardView() {
 
               <Link
                 href="/online-test/create"
-                className="inline-flex h-10 cursor-pointer items-center justify-center rounded-[.6875rem] bg-(image:--gradient-brand) px-6 text-center text-sm font-semibold text-white shadow-(--shadow-brand) transition hover:opacity-95 lg:min-w-36.5"
+                className={getButtonClassName({
+                  className: "h-10 px-6 lg:min-w-36.5",
+                })}
               >
                 Create Online Test
               </Link>

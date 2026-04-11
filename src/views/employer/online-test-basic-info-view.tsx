@@ -9,6 +9,7 @@ import {
   createOnlineTest,
   updateOnlineTestBasicInfo,
 } from "@/features/online-test/services/online-test.service";
+import { getButtonClassName } from "@/components/ui/app-button";
 import { getApiErrorMessage } from "@/lib/get-api-error-message";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import {
@@ -75,7 +76,10 @@ export function OnlineTestBasicInfoView({
         <section className="mx-auto flex w-full max-w-239 flex-col gap-4 rounded-[1.125rem] bg-white px-5 py-6 shadow-(--shadow-card) sm:flex-row sm:items-center sm:justify-between sm:px-7 lg:px-8">
           <button
             type="button"
-            className="inline-flex h-11.5 cursor-pointer items-center justify-center rounded-xl border border-(--color-border-soft) px-16 text-sm font-semibold text-(--color-text-control) transition hover:bg-(--color-hover-surface)"
+            className={getButtonClassName({
+              variant: "outline",
+              className: "px-16",
+            })}
           >
             Cancel
           </button>
@@ -84,7 +88,7 @@ export function OnlineTestBasicInfoView({
             type="button"
             onClick={handleSave}
             disabled={isSaving}
-            className="inline-flex h-11.5 cursor-pointer items-center justify-center rounded-xl bg-(image:--gradient-brand) px-8 text-sm font-semibold text-white shadow-(--shadow-brand) transition hover:opacity-95"
+            className={getButtonClassName()}
           >
             {isSaving ? "Saving..." : "Save & Continue"}
           </button>

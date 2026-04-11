@@ -5,6 +5,7 @@ import { FiClock, FiFileText, FiXCircle } from "react-icons/fi";
 
 import { MetricItem } from "@/features/dashboard/components/metric-item";
 import type { CandidateOnlineTest } from "@/features/dashboard/types/dashboard.types";
+import { getButtonClassName } from "@/components/ui/app-button";
 
 type CandidateTestCardProps = {
   test: CandidateOnlineTest;
@@ -40,7 +41,11 @@ export function CandidateTestCard({ test }: CandidateTestCardProps) {
 
         <Link
           href={`/assessment/${test.id}`}
-          className="inline-flex cursor-pointer items-center justify-center rounded-[.6875rem] border border-(--color-brand-border) px-10 py-2.25 text-sm font-semibold text-(--color-brand-text) transition hover:bg-(--color-brand-hover)"
+          className={getButtonClassName({
+            variant: "outline",
+            className:
+              "rounded-[.6875rem] border-(--color-brand-border) px-10 text-(--color-brand-text)",
+          })}
         >
           Start
         </Link>

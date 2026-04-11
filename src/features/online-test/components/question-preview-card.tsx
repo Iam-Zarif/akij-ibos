@@ -115,11 +115,7 @@ export function QuestionPreviewCard({
             </p>
           ) : null}
 
-          {question.type === "manual" ? (
-            <p className="max-w-215 text-sm leading-[1.75] text-(--color-text-primary)">
-              {question.answerText}
-            </p>
-          ) : (
+          {question.type === "manual" ? null : (
             <div className="space-y-4">
               {question.choices?.map((choice) => (
                 <ChoiceRow key={choice.id} choice={choice} />

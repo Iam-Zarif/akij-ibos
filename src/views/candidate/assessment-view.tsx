@@ -8,6 +8,7 @@ import { AssessmentOptionItem } from "@/features/assessment/components/assessmen
 import { AssessmentTimeoutModal } from "@/features/assessment/components/assessment-timeout-modal";
 import { RichTextEditor } from "@/features/online-test/components/rich-text-editor";
 import { useOnlineTestDetail } from "@/features/online-test/hooks/use-online-test-detail";
+import { getButtonClassName } from "@/components/ui/app-button";
 import type {
   ChoiceOption,
   PreviewQuestion,
@@ -248,7 +249,10 @@ function AssessmentSession({
             <button
               type="button"
               onClick={handleSkipQuestion}
-              className="inline-flex cursor-pointer items-center justify-center rounded-xl border border-(--color-border-primary) bg-white px-7 py-3 text-base font-semibold text-(--color-text-secondary)"
+              className={getButtonClassName({
+                variant: "outline",
+                className: "px-7 text-base",
+              })}
             >
               Skip this Question
             </button>
@@ -256,8 +260,9 @@ function AssessmentSession({
               type="button"
               onClick={handleSaveAndContinue}
               disabled={!hasAnsweredQuestion}
-              style={{ background: "var(--gradient-brand)" }}
-              className="inline-flex cursor-pointer items-center justify-center rounded-xl px-8 py-3 text-base font-semibold text-white shadow-(--shadow-brand) disabled:cursor-not-allowed disabled:opacity-50"
+              className={getButtonClassName({
+                className: "px-8 text-base",
+              })}
             >
               {isLastQuestion ? "Submit Test" : "Save & Continue"}
             </button>
@@ -312,7 +317,10 @@ export function AssessmentView({
             </p>
             <Link
               href="/dashboard"
-              className="mt-6 inline-flex cursor-pointer items-center justify-center rounded-xl border border-(--color-border-primary) bg-white px-7 py-3 text-base font-semibold text-(--color-text-secondary)"
+              className={getButtonClassName({
+                variant: "outline",
+                className: "mt-6 px-7 text-base",
+              })}
             >
               Back to Dashboard
             </Link>

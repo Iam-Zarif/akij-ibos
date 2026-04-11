@@ -6,6 +6,7 @@ import { useOnlineTestDetail } from "@/features/online-test/hooks/use-online-tes
 import { QuestionModal } from "@/features/online-test/components/question-modal";
 import { ManageOnlineTestStepper } from "@/features/online-test/components/manage-online-test-stepper";
 import type { QuestionVariant } from "@/features/online-test/types/question.types";
+import { getButtonClassName } from "@/components/ui/app-button";
 
 export function OnlineTestQuestionsView({
   isModalOpen,
@@ -48,7 +49,7 @@ export function OnlineTestQuestionsView({
                   ? `/online-test/questions?testId=${testId}&modal=true&type=checkbox`
                   : "/online-test/questions?modal=true&type=checkbox"
               }
-              className="inline-flex h-13.5 cursor-pointer items-center justify-center rounded-[.875rem] bg-(image:--gradient-brand) px-8 text-lg font-semibold text-white shadow-(--shadow-brand) transition hover:opacity-95"
+              className={getButtonClassName()}
             >
               Add Question
             </Link>

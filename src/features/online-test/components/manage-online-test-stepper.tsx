@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { FiCheck } from "react-icons/fi";
+import { getButtonClassName } from "@/components/ui/app-button";
 
 type ManageOnlineTestStepperProps = {
   backHref: string;
@@ -84,7 +85,10 @@ export function ManageOnlineTestStepper({
 
         <Link
           href={backHref}
-          className="inline-flex h-10 cursor-pointer items-center justify-center rounded-xl border border-(--color-border-soft) px-6 text-sm font-semibold text-(--color-text-control) transition hover:bg-(--color-hover-surface)"
+          className={getButtonClassName({
+            variant: "outline",
+            className: "h-10 px-6",
+          })}
         >
           Back to Dashboard
         </Link>

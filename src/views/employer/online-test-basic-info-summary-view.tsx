@@ -5,6 +5,7 @@ import Link from "next/link";
 import { BasicInfoSummary } from "@/features/online-test/components/basic-info-summary";
 import { useOnlineTestDetail } from "@/features/online-test/hooks/use-online-test-detail";
 import { ManageOnlineTestStepper } from "@/features/online-test/components/manage-online-test-stepper";
+import { getButtonClassName } from "@/components/ui/app-button";
 
 export function OnlineTestBasicInfoSummaryView({
   testId,
@@ -34,7 +35,10 @@ export function OnlineTestBasicInfoSummaryView({
         <section className="mx-auto flex w-full max-w-239 flex-col gap-4 rounded-[1.125rem] bg-white px-5 py-6 shadow-(--shadow-card) sm:flex-row sm:items-center sm:justify-between sm:px-7 lg:px-8">
           <button
             type="button"
-            className="inline-flex h-11.5 cursor-pointer items-center justify-center rounded-xl border border-(--color-border-soft) px-16 text-sm font-semibold text-(--color-text-control) transition hover:bg-(--color-hover-surface)"
+            className={getButtonClassName({
+              variant: "outline",
+              className: "px-16",
+            })}
           >
             Cancel
           </button>
@@ -45,7 +49,7 @@ export function OnlineTestBasicInfoSummaryView({
                 ? `/online-test/questions?testId=${testId}`
                 : "/online-test/questions"
             }
-            className="inline-flex h-11.5 cursor-pointer items-center justify-center rounded-xl bg-(image:--gradient-brand) px-8 text-sm font-semibold text-white shadow-(--shadow-brand) transition hover:opacity-95"
+            className={getButtonClassName()}
           >
             Save &amp; Continue
           </Link>

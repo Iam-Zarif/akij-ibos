@@ -5,6 +5,7 @@ import { useState } from "react";
 
 import { DashboardSearch } from "@/features/dashboard/components/dashboard-search";
 import { EmptyOnlineTestState } from "@/features/dashboard/components/empty-online-test-state";
+import { getButtonClassName } from "@/components/ui/app-button";
 
 export function OnlineTestEmptyView() {
   const [query, setQuery] = useState("");
@@ -23,7 +24,9 @@ export function OnlineTestEmptyView() {
 
               <Link
                 href="/online-test/create"
-                className="inline-flex h-10 cursor-pointer items-center justify-center rounded-[.6875rem] bg-(image:--gradient-brand) px-6 text-center text-sm font-semibold text-white shadow-(--shadow-brand) transition hover:opacity-95 lg:min-w-36.5"
+                className={getButtonClassName({
+                  className: "h-10 px-6 lg:min-w-36.5",
+                })}
               >
                 Create Online Test
               </Link>
