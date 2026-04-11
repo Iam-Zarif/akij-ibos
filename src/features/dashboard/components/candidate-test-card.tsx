@@ -44,7 +44,7 @@ export function CandidateTestCard({ test }: CandidateTestCardProps) {
           className={getButtonClassName({
             variant: "outline",
             className:
-              "rounded-[.6875rem] border-(--color-brand-border) px-10 text-(--color-brand-text)",
+              "rounded-[.6875rem] border-(--color-brand-border) px-12 py-2 text-sm text-(--color-brand-text)",
           })}
         >
           Start
