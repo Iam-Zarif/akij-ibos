@@ -33,7 +33,7 @@ export function getButtonClassName({
   const variantClassName =
     variant === "primary"
       ? "bg-(image:--gradient-brand) text-white hover:opacity-95"
-      : "border border-(--color-border-soft) bg-white text-(--color-text-brand) hover:bg-(--color-hover-surface)";
+      : "border border-(--color-border-soft) bg-white text-(--color-brand-text) hover:bg-(--color-hover-surface)";
 
   return joinClassNames(
     baseClassName,
